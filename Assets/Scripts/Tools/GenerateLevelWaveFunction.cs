@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using UnityEngine;
 
 public class GenerateLevelWaveFunction : MonoBehaviour
@@ -43,9 +44,27 @@ public class GenerateLevelWaveFunction : MonoBehaviour
         {
             for (int y = 0; y < Height; y++)
             {
-                //CellLevelGrid[x,y] = new Cell
+                CellLevelGrid[x,y].SetCoordinates(x, y);
+                SetNeighbors(CellLevelGrid[x, y]);
             }
         }
+    }
+    void SetNeighbors(Cell cell)
+    {
+        List<Cell> neighbors = new List<Cell>();
+        for (int x = -1; x < 2; x++)
+        {
+            for (int y = -1; y < 2; y++)
+            {
+                if (x == 0 && y == 0)
+                    continue;
+                int neighborsCellX = cell._x + x;
+                int neighborsCellY = cell._y + y;
+                if (CheckIfInBounds(neighborsCellX, neighborsCellY))
+                    neighbors.Add(CellLevelGrid[neighborsCellX, neighborsCellY]);
+            }
+        }
+        cell.SetNeighbors(neighbors);
     }
     private bool CheckIfInBounds(int x,int y)
     {

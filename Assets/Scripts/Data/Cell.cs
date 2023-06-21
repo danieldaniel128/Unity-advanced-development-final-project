@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,9 @@ public class Cell
 {
     public int _x { get; private set; }
     public int _y { get; private set; }
+
+    public Action OnStateSet { get; private set; }
+    public List<Cell> NeighborCells { get; private set; }   
 
     /// <summary>
     /// cell states
@@ -93,6 +97,17 @@ public class Cell
     public Cell(CellStateEnum cellState)
     {
         CellState = cellState;
+        //OnStateSet
+    }
+    void UpdateCurrentPossibleCellStatesToConnect()
+    {
+
+    }
+
+
+    public void SetNeighbors(List<Cell> cells)
+    {
+        NeighborCells = cells;
     }
 
     public void SetNeighbors(Cell right,Cell left, Cell down, Cell downRight, Cell downLeft, Cell top, Cell topRight, Cell topLeft) 
@@ -109,6 +124,6 @@ public class Cell
 
     public static CellStateEnum GetRandomCell()
     {
-        return (CellStateEnum)Random.Range(0, 3);
+        return (CellStateEnum)UnityEngine.Random.Range(0, 3);
     }
 }
