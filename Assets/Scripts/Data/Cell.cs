@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Cell
 {
+    public int _x { get; private set; }
+    public int _y { get; private set; }
+
     /// <summary>
     /// cell states
     /// </summary>
@@ -55,6 +58,12 @@ public class Cell
             , CellStateEnum.Ground
         }; //default cell states
 
+    public void SetCoordinates(int x,int y)//class of index is too much for now
+    {
+        _x = x;
+        _y = y;
+    }
+
     /// <summary>
     /// sets the cell State
     /// </summary>
@@ -96,5 +105,10 @@ public class Cell
         TopNeighborCell = top;
         TopRightNeighborCell = topRight;
         TopleftNeighborCell = topLeft;
+    }
+
+    public static CellStateEnum GetRandomCell()
+    {
+        return (CellStateEnum)Random.Range(0, 3);
     }
 }
