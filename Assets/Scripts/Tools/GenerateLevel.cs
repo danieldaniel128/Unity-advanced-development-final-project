@@ -19,6 +19,11 @@ public class GenerateLevel : MonoBehaviour
 
     List<Vector2> EdgeColliderPoints;
 
+    private void Start()
+    {
+        CreateLevel();
+    }
+
     [ContextMenu("Generate Level")]
     void CreateLevel()
     {
