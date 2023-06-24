@@ -52,9 +52,9 @@ public class GenerateLevelWaveFunction : MonoBehaviour
     void SetNeighbors(Cell cell)
     {
         List<Cell> neighbors = new List<Cell>();
-        for (int x = -1; x < 2; x++)
+        for (int x = -1; x <= 1; x++)
         {
-            for (int y = -1; y < 2; y++)
+            for (int y = -1; y <= 1; y++)
             {
                 if (x == 0 && y == 0)
                     continue;
