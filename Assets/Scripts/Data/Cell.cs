@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 //Daniel
@@ -8,7 +9,7 @@ public class Cell
 {
     public Index2D CellIndex { get; private set; }
 
-    public Action OnStateSet { get; private set; }
+    public Action<CellStateEnum> OnStateSet { get; private set; }
     public List<Cell> NeighborCells { get; private set; }   
     #region NeighborsCells
     public Cell LeftNeighborCell { get; private set; }
@@ -34,7 +35,8 @@ public class Cell
     /// <summary>
     /// the cell state of the cell
     /// </summary>
-    public CellStateEnum CellState { get; private set; }
+    private CellStateEnum _cellState;
+    public CellStateEnum CellState { get => _cellState; private set { _cellState = value; OnStateSetInvoke(_cellState); } }
     /// <summary>
     /// Neighbors of this Cell
     /// </summary>
@@ -61,6 +63,21 @@ public class Cell
             , CellStateEnum.CornerRight
             , CellStateEnum.Ground
         }; //default cell states
+
+    public Cell(CellStateEnum cellState)
+    {
+        CellState = cellState;
+        OnStateSet = CalculateNewPossibleCellStatesToConnect;
+    }
+
+    private void CalculateNewPossibleCellStatesToConnect(CellStateEnum cellState)
+    {
+
+    }
+    private void OnStateSetInvoke(CellStateEnum cellState)
+    {
+        OnStateSet?.Invoke(cellState);
+    }
 
     public void SetCoordinates(int x,int y)//class of index is too much for now
     {
@@ -96,11 +113,6 @@ public class Cell
     public void ClearPossibleCellStatesToConnect()
     {
         PossibleCellStatesToConnect.Clear();
-    }
-    public Cell(CellStateEnum cellState)
-    {
-        CellState = cellState;
-        //OnStateSet
     }
     void UpdateCurrentPossibleCellStatesToConnect()
     {
