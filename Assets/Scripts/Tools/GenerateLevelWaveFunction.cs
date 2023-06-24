@@ -31,6 +31,24 @@ public class GenerateLevelWaveFunction : MonoBehaviour
             _height = value;
         }
     }
+    /// <summary>
+    /// like in num pad, the names of each prefab will be like that, representing their locations on the tile set:
+    /// 7 8 9
+    /// 4 5 6
+    /// 1 2 3
+    /// </summary>
+    [Header("Ground")]
+    #region TileSet Prefabs
+    [SerializeField] GameObject _ground9;
+    [SerializeField] GameObject _ground8;
+    [SerializeField] GameObject _ground7;
+    [SerializeField] GameObject _ground6;
+    [SerializeField] GameObject _ground5;
+    [SerializeField] GameObject _ground4;
+    [SerializeField] GameObject _ground3;
+    [SerializeField] GameObject _ground2;
+    [SerializeField] GameObject _ground1;
+    #endregion
 
     private void Start()
     {
