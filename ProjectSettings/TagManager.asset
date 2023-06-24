@@ -3,7 +3,33 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - agent
+  - target
+  - ground
+  - wall
+  - symbol_O_Goal
+  - symbol_X_Goal
+  - symbol_O
+  - symbol_X
+  - walkableSurface
+  - block
+  - goal
+  - blueGoal
+  - purpleGoal
+  - purpleAgent
+  - blueAgent
+  - ball
+  - badFood
+  - food
+  - plus
+  - ex
+  - tile
+  - switchOff
+  - pyramid
+  - stone
+  - Obstacle
+  - Goal
   layers:
   - Default
   - TransparentFX
