@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 using UnityEngine;
 using static UnityEditor.Progress;
@@ -49,7 +50,7 @@ public class GenerateLevelWaveFunction : MonoBehaviour
     [SerializeField] GameObject _ground3;
     [SerializeField] GameObject _ground2;
     [SerializeField] GameObject _ground1;
-    List<GameObject> _tileSetPrefabs;
+    [SerializeField] List<GameObject> _tileSetPrefabs;
     List<PrefabState> prefabStates;
     #endregion
 
@@ -74,7 +75,8 @@ public class GenerateLevelWaveFunction : MonoBehaviour
     private void SetGridCells()
     {
         CellLevelGrid = new Cell[Width, Height];
-        CellLevelGrid[0,0] = new Cell(Cell.GetRandomCell(), _ground8);
+        CellStateEnum cellState = Cell.GetRandomCell();
+        CellLevelGrid[0,0] = new Cell(prefabStates.FirstOrDefault(c => c.CellStateEnum == cellState));
         //Debug.Log($"<color=red> x: 0 y: 0 </color>");
         for (int x = 0; x < Width; x++)
         {
@@ -83,7 +85,7 @@ public class GenerateLevelWaveFunction : MonoBehaviour
                 if (x == 0 && y == 0)
                     continue;
                 //Debug.Log($"<color=red> x: {x} y: {y} </color>");
-                CellLevelGrid[x,y] = new Cell(Cell.GetRandomCell(), _ground8);//for now
+                CellLevelGrid[x,y] = new Cell(null);//for now
                 CellLevelGrid[x,y].SetCoordinates(x, y);
             }
         }
@@ -151,7 +153,7 @@ public class GenerateLevelWaveFunction : MonoBehaviour
 
     private void InstantiatePrefab(Cell cell)
     {
-        Instantiate(cell.CellPrefab,new Vector3(cell.CellIndex.X-7.5f,cell.CellIndex.Y-4.5f),Quaternion.identity);
+        Instantiate(cell.PrefabState.CellPrefab,new Vector3(cell.CellIndex.X-7.5f,cell.CellIndex.Y-4.5f),Quaternion.identity);
     }
 
 

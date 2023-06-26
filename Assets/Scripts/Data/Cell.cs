@@ -21,7 +21,7 @@ public class Cell
 {
     public Index2D CellIndex { get; private set; }
 
-    public Action<CellStateEnum> OnStateSet { get; private set; }
+    public Action OnStateSet { get; private set; }
     /// <summary>
     /// Neighbors of this Cell
     /// </summary>
@@ -43,10 +43,8 @@ public class Cell
     /// <summary>
     /// the cell state of the cell
     /// </summary>
-    private CellStateEnum _cellState;
-    public CellStateEnum CellState { get => _cellState; private set { _cellState = value; OnStateSetInvoke(_cellState); } }
-
-    public GameObject CellPrefab { get; private set; }
+    [SerializeField] PrefabState _prefabState;
+    public PrefabState PrefabState { get => _prefabState; set { _prefabState = value; OnStateSetInvoke(); } }
 
     /// <summary>
     /// CellStates That the CellState can possibly connect to
@@ -83,20 +81,19 @@ public class Cell
             , CellStateEnum.GroundMidlle
         }; //default cell states
 
-    public Cell(CellStateEnum cellState , GameObject prefab)
+    public Cell(PrefabState prefabState)
     {
-        CellState = cellState;
+        this.PrefabState = prefabState;
         OnStateSet = CalculateNewPossibleCellStatesToConnect;
-        CellPrefab = prefab;
     }
 
-    private void CalculateNewPossibleCellStatesToConnect(CellStateEnum cellState)
+    private void CalculateNewPossibleCellStatesToConnect()
     {
-
+        //PrefabState.prefabConnecter.TopCornerLeft;
     }
-    private void OnStateSetInvoke(CellStateEnum cellState)
+    private void OnStateSetInvoke()
     {
-        OnStateSet?.Invoke(cellState);
+        OnStateSet?.Invoke();
     }
 
     public void SetCoordinates(int x,int y)//class of index is too much for now
@@ -109,12 +106,12 @@ public class Cell
     }
 
     /// <summary>
-    /// sets the cell State
+    /// sets the prefab and State of the cell
     /// </summary>
-    /// <param name="cellState"></param>
-    public void SetState(CellStateEnum cellState)
+    /// <param name="prefabState"></param>
+    public void SetState(PrefabState prefabState)
     {
-        CellState = cellState;
+        PrefabState = prefabState;
     }
 
     /// <summary>
