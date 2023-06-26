@@ -52,14 +52,15 @@ public class GenerateLevelWaveFunction : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log(Width +" "+ Height);
+        //Debug.Log(Width +" "+ Height);
         SetGridCells();
         SetGridNeighbors();
+        ConvertCellsToPrefabs();
     }
     private void SetGridCells()
     {
         CellLevelGrid = new Cell[Width, Height];
-        CellLevelGrid[0,0] = new Cell(Cell.GetRandomCell());
+        CellLevelGrid[0,0] = new Cell(Cell.GetRandomCell(), _ground8);
         //Debug.Log($"<color=red> x: 0 y: 0 </color>");
         for (int x = 0; x < Width; x++)
         {
@@ -68,7 +69,7 @@ public class GenerateLevelWaveFunction : MonoBehaviour
                 if (x == 0 && y == 0)
                     continue;
                 //Debug.Log($"<color=red> x: {x} y: {y} </color>");
-                CellLevelGrid[x,y] = new Cell(Cell.GetRandomCell());//for now
+                CellLevelGrid[x,y] = new Cell(Cell.GetRandomCell(), _ground8);//for now
                 CellLevelGrid[x,y].SetCoordinates(x, y);
             }
         }
@@ -113,6 +114,18 @@ public class GenerateLevelWaveFunction : MonoBehaviour
         cell.SetCellNeighbors(cell,neighbors);
     }
 
+    void ConvertCellsToPrefabs()
+    {
+        for (int x = 0; x < Width; x++)
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                InstantiatePrefab(CellLevelGrid[x, y]);
+            }
+        }
+    }
+
+
     private bool CheckIfInBounds(Index2D cellIndex)
     {
         if(cellIndex.X >= 0 && cellIndex.X < Width)
@@ -120,4 +133,12 @@ public class GenerateLevelWaveFunction : MonoBehaviour
                 return true;
         return false;
     } 
+
+
+    private void InstantiatePrefab(Cell cell)
+    {
+        Instantiate(cell.CellPrefab,new Vector3(cell.CellIndex.X-7.5f,cell.CellIndex.Y-4.5f),Quaternion.identity);
+    }
+
+
 }

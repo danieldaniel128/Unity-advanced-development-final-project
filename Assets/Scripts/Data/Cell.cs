@@ -4,11 +4,27 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //Daniel
+    public enum CellStateEnum 
+    {
+        GroundMidlle,
+        GroundRight,
+        GroundLeft,
+        TopCornerRight,
+        TopCornerMid,
+        TopCornerLeft,
+        BottomCornerRight,
+        BottomCornerMid,
+        BottomCornerLeft,
+        EmptyCell
+    }
 public class Cell
 {
     public Index2D CellIndex { get; private set; }
 
     public Action<CellStateEnum> OnStateSet { get; private set; }
+    /// <summary>
+    /// Neighbors of this Cell
+    /// </summary>
     public List<Cell> NeighborCells { get; private set; }   
     #region NeighborsCells
     public Cell LeftNeighborCell { get; private set; }
@@ -24,21 +40,13 @@ public class Cell
     /// <summary>
     /// cell states
     /// </summary>
-    public enum CellStateEnum 
-    {
-        Ground,
-        CornerRight,
-        CornerLeft,
-        EmptyCell
-    }
     /// <summary>
     /// the cell state of the cell
     /// </summary>
     private CellStateEnum _cellState;
     public CellStateEnum CellState { get => _cellState; private set { _cellState = value; OnStateSetInvoke(_cellState); } }
-    /// <summary>
-    /// Neighbors of this Cell
-    /// </summary>
+
+    public GameObject CellPrefab { get; private set; }
 
     /// <summary>
     /// CellStates That the CellState can possibly connect to
@@ -46,10 +54,16 @@ public class Cell
     public List<CellStateEnum> PossibleCellStatesToConnect { get; private set; } 
         = new List<CellStateEnum> 
         {
-            CellStateEnum.EmptyCell
-            , CellStateEnum.CornerLeft
-            , CellStateEnum.CornerRight
-            , CellStateEnum.Ground 
+              CellStateEnum.EmptyCell
+            , CellStateEnum.TopCornerLeft
+            , CellStateEnum.TopCornerMid
+            , CellStateEnum.TopCornerRight
+            , CellStateEnum.BottomCornerMid
+            , CellStateEnum.BottomCornerRight
+            , CellStateEnum.BottomCornerLeft
+            , CellStateEnum.GroundLeft
+            , CellStateEnum.GroundRight
+            , CellStateEnum.GroundMidlle 
         }; //default cell states
     /// <summary>
     /// each neighbor cell that got set will affect the new possible states of this cell
@@ -57,16 +71,23 @@ public class Cell
     public List<CellStateEnum> CurrentPossibleCellStatesToConnect { get; private set; }
         = new List<CellStateEnum>
         {
-            CellStateEnum.EmptyCell
-            , CellStateEnum.CornerLeft
-            , CellStateEnum.CornerRight
-            , CellStateEnum.Ground
+              CellStateEnum.EmptyCell
+            , CellStateEnum.TopCornerLeft
+            , CellStateEnum.TopCornerMid
+            , CellStateEnum.TopCornerRight
+            , CellStateEnum.BottomCornerMid
+            , CellStateEnum.BottomCornerRight
+            , CellStateEnum.BottomCornerLeft
+            , CellStateEnum.GroundLeft
+            , CellStateEnum.GroundRight
+            , CellStateEnum.GroundMidlle
         }; //default cell states
 
-    public Cell(CellStateEnum cellState)
+    public Cell(CellStateEnum cellState , GameObject prefab)
     {
         CellState = cellState;
         OnStateSet = CalculateNewPossibleCellStatesToConnect;
+        CellPrefab = prefab;
     }
 
     private void CalculateNewPossibleCellStatesToConnect(CellStateEnum cellState)
