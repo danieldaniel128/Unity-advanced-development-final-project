@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7836923180160658038}
   - component: {fileID: 7836923180160658037}
   - component: {fileID: -3658353389709899531}
+  - component: {fileID: -2875517228195679844}
   m_Layer: 0
   m_Name: tile32
   m_TagString: Untagged
@@ -119,3 +120,17 @@ MonoBehaviour:
   - {fileID: 9106872325478668566, guid: 8798ec7354501374b86089caf7f54027, type: 3}
   - {fileID: 3005903213206350177, guid: 7e2f0cf718d6fb447b295f35e32c8c83, type: 3}
   - {fileID: 9193306210728429747, guid: 13e6aa73fe1083a4b8414084a2a2f682, type: 3}
+--- !u!114 &-2875517228195679844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7836923180160658039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3362979986dce44a53d115a72e86f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CellStateEnum: 4
+  CellPrefab: {fileID: 7836923180160658039}

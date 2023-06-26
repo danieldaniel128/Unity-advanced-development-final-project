@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5738560802891469742}
   - component: {fileID: 5738560802891469737}
   - component: {fileID: -6122051330427107446}
+  - component: {fileID: -4942220009709837769}
   m_Layer: 0
   m_Name: tile30
   m_TagString: Untagged
@@ -113,3 +114,17 @@ MonoBehaviour:
   - {fileID: 3005903213206350177, guid: 7e2f0cf718d6fb447b295f35e32c8c83, type: 3}
   - {fileID: 2817973829974996104, guid: eb48eb0fd8626c349b180fb34e49fd7b, type: 3}
   - {fileID: 9106872325478668566, guid: 8798ec7354501374b86089caf7f54027, type: 3}
+--- !u!114 &-4942220009709837769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5738560802891469743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3362979986dce44a53d115a72e86f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CellStateEnum: 3
+  CellPrefab: {fileID: 5738560802891469743}

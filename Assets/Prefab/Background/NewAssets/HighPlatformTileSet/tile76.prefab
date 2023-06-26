@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 9193306210728429744}
   - component: {fileID: 9193306210728429745}
   - component: {fileID: 8059681540965526649}
+  - component: {fileID: -7238508611082184682}
   m_Layer: 0
   m_Name: tile76
   m_TagString: Untagged
@@ -115,3 +116,17 @@ MonoBehaviour:
   BottomCornerMid: []
   BottomCornerRight: []
   BottomCornerLeft: []
+--- !u!114 &-7238508611082184682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9193306210728429747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa3362979986dce44a53d115a72e86f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CellStateEnum: 7
+  CellPrefab: {fileID: 9193306210728429747}

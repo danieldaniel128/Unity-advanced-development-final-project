@@ -48,6 +48,7 @@ public class GenerateLevelWaveFunction : MonoBehaviour
     [SerializeField] GameObject _ground3;
     [SerializeField] GameObject _ground2;
     [SerializeField] GameObject _ground1;
+    List<GameObject> _tileSetPrefabs;
     #endregion
 
     private void Start()
