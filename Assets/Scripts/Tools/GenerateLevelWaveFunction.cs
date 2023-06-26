@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class GenerateLevelWaveFunction : MonoBehaviour
 {
@@ -49,11 +50,23 @@ public class GenerateLevelWaveFunction : MonoBehaviour
     [SerializeField] GameObject _ground2;
     [SerializeField] GameObject _ground1;
     List<GameObject> _tileSetPrefabs;
+    List<PrefabState> prefabStates;
     #endregion
+
+    void GetPrefabsStates()
+    {
+        prefabStates = new List<PrefabState>();
+        foreach (GameObject item in _tileSetPrefabs)
+        {
+            prefabStates.Add(item.GetComponent<PrefabState>());
+        }
+        prefabStates.Add(null);//the empty state
+    }
 
     private void Start()
     {
         //Debug.Log(Width +" "+ Height);
+        GetPrefabsStates();
         SetGridCells();
         SetGridNeighbors();
         ConvertCellsToPrefabs();
