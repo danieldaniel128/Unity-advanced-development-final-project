@@ -30,6 +30,7 @@ TagManager:
   - stone
   - Obstacle
   - Goal
+  - Platform
   layers:
   - Default
   - TransparentFX
