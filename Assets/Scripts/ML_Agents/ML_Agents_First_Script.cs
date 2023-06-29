@@ -4,12 +4,17 @@ using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
+using System;
 
 
 public class ML_Agents_First_Script : Agent
 {
     [SerializeField] private Transform target;
     [SerializeField] private float moveSpeed = 1;
+    [SerializeField] private float jumpForce = 1;
+    [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private bool isGrounded = true;
+
     private Vector3 agentStartTransformPosition;
 
     [SerializeField] private SimplePlayerController simpleController;
@@ -32,18 +37,27 @@ public class ML_Agents_First_Script : Agent
     public override void OnActionReceived(ActionBuffers actions)
     {
         float moveX = actions.ContinuousActions[0];
-        float moveY = actions.ContinuousActions[1];
+       // int jump = actions.DiscreteActions[0];
+        //simpleController.MoveX = moveX;
+        
+       //if (jump == 1)
+       // {
+       //     rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+       //     isGrounded = false;
+       // }
+        //transform.Translate(new Vector3(moveX, 0, 0) * moveSpeed * Time.deltaTime);
+        transform.position += new Vector3(moveX, 0, 0) * moveSpeed * Time.deltaTime;
+        
 
-        simpleController.MoveX = moveX;
-        simpleController.MoveY = moveY;
-        //transform.position += new Vector3(moveX, moveY, 0) * Time.deltaTime * moveSpeed;
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
     {
         ActionSegment<float> continuousActions = actionsOut.ContinuousActions;
+        //ActionSegment<int> discreteActions = actionsOut.DiscreteActions;
         continuousActions[0] = Input.GetAxisRaw("Horizontal");
-        continuousActions[1] = Input.GetAxisRaw("Vertical");
+        //discreteActions[0] = Convert.ToInt32(Input.GetButtonDown("Jump"));
+
     }
 
   
@@ -59,15 +73,26 @@ public class ML_Agents_First_Script : Agent
 
         if (coll.CompareTag("Goal"))
         {
-            SetReward(1f);
+            if (Time.time is > 15 and < 30)
+            {
+             SetReward(1f);
+            }
+            else
+            { 
+                SetReward(-0.5f);
+            }
             EndEpisode();
             Debug.Log("win");
+            
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("Collided");
+        
+        Debug.Log("grounded");
+        isGrounded = true;
     }
+  
 
 
 }

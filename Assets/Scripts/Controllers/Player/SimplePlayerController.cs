@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,8 +9,8 @@ public class SimplePlayerController : MonoBehaviour
     [SerializeField] private bool isAI = false;
     public float JumpForce = 1f;
     [SerializeField] Rigidbody2D rb;
-   public float MoveX;
-   public float MoveY;
+    public float MoveX;
+    public float MoveY;
 
     // Start is called before the first frame update
     void Start()
@@ -20,7 +21,8 @@ public class SimplePlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Inputs();
+       
+       // Inputs();
     }
 
     public void Inputs()
@@ -28,27 +30,30 @@ public class SimplePlayerController : MonoBehaviour
         Move();
         if (Input.GetButtonDown("Jump"))
         {
+            
             Jump();
         }
     }
+
     public void Move()
     {
-        if (!isAI)
+        if (isAI == false)
         {
-           MoveX = Input.GetAxis("Horizontal");
-           MoveY = Input.GetAxis("Vertical");
+            MoveX = Input.GetAxis("Horizontal");
         }
-        transform.Translate(new Vector3(MoveX, MoveY, 0) * MoveSpeed * Time.deltaTime);
+       // transform.Translate(new Vector3(MoveX, 0, 0) * MoveSpeed * Time.deltaTime);
     }
 
     public void Jump()
     {
         rb.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
     }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.Log("collision");
     }
+
 }
 
 
