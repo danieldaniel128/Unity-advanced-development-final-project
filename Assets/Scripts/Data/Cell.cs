@@ -1,15 +1,31 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+using System.Linq;
 using UnityEngine;
 
 //Daniel
+    public enum CellStateEnum 
+    {
+        GroundMidlle,
+        GroundRight,
+        GroundLeft,
+        TopCornerRight,
+        TopCornerMid,
+        TopCornerLeft,
+        BottomCornerRight,
+        BottomCornerMid,
+        BottomCornerLeft,
+        EmptyCell
+    }
 public class Cell
 {
     public Index2D CellIndex { get; private set; }
 
-    public Action<CellStateEnum> OnStateSet { get; private set; }
+    public Action OnStateSet { get; private set; }
+    /// <summary>
+    /// Neighbors of this Cell
+    /// </summary>
     public List<Cell> NeighborCells { get; private set; }   
     #region NeighborsCells
     public Cell LeftNeighborCell { get; private set; }
@@ -25,21 +41,11 @@ public class Cell
     /// <summary>
     /// cell states
     /// </summary>
-    public enum CellStateEnum 
-    {
-        Ground,
-        CornerRight,
-        CornerLeft,
-        EmptyCell
-    }
     /// <summary>
     /// the cell state of the cell
     /// </summary>
-    private CellStateEnum _cellState;
-    public CellStateEnum CellState { get => _cellState; private set { _cellState = value; OnStateSetInvoke(_cellState); } }
-    /// <summary>
-    /// Neighbors of this Cell
-    /// </summary>
+    [SerializeField] PrefabState _prefabState;
+    public PrefabState PrefabState { get => _prefabState; set { _prefabState = value; OnStateSetInvoke(); } }
 
     /// <summary>
     /// CellStates That the CellState can possibly connect to
@@ -47,10 +53,16 @@ public class Cell
     public List<CellStateEnum> PossibleCellStatesToConnect { get; private set; } 
         = new List<CellStateEnum> 
         {
-            CellStateEnum.EmptyCell
-            , CellStateEnum.CornerLeft
-            , CellStateEnum.CornerRight
-            , CellStateEnum.Ground 
+              CellStateEnum.EmptyCell
+            , CellStateEnum.TopCornerLeft
+            , CellStateEnum.TopCornerMid
+            , CellStateEnum.TopCornerRight
+            , CellStateEnum.BottomCornerMid
+            , CellStateEnum.BottomCornerRight
+            , CellStateEnum.BottomCornerLeft
+            , CellStateEnum.GroundLeft
+            , CellStateEnum.GroundRight
+            , CellStateEnum.GroundMidlle 
         }; //default cell states
     /// <summary>
     /// each neighbor cell that got set will affect the new possible states of this cell
@@ -58,25 +70,31 @@ public class Cell
     public List<CellStateEnum> CurrentPossibleCellStatesToConnect { get; private set; }
         = new List<CellStateEnum>
         {
-            CellStateEnum.EmptyCell
-            , CellStateEnum.CornerLeft
-            , CellStateEnum.CornerRight
-            , CellStateEnum.Ground
+              CellStateEnum.EmptyCell
+            , CellStateEnum.TopCornerLeft
+            , CellStateEnum.TopCornerMid
+            , CellStateEnum.TopCornerRight
+            , CellStateEnum.BottomCornerMid
+            , CellStateEnum.BottomCornerRight
+            , CellStateEnum.BottomCornerLeft
+            , CellStateEnum.GroundLeft
+            , CellStateEnum.GroundRight
+            , CellStateEnum.GroundMidlle
         }; //default cell states
 
-    public Cell(CellStateEnum cellState)
+    public Cell(PrefabState prefabState)
     {
-        CellState = cellState;
+        this.PrefabState = prefabState;
         OnStateSet = CalculateNewPossibleCellStatesToConnect;
     }
 
-    private void CalculateNewPossibleCellStatesToConnect(CellStateEnum cellState)
+    private void CalculateNewPossibleCellStatesToConnect()
     {
-
+        //CurrentPossibleCellStatesToConnect= CurrentPossibleCellStatesToConnect.Where(c => c == PrefabState.prefabConnecter)//PrefabState.prefabConnecter.TopCornerLeft.Where(c => c = PrefabState);
     }
-    private void OnStateSetInvoke(CellStateEnum cellState)
+    private void OnStateSetInvoke()
     {
-        OnStateSet?.Invoke(cellState);
+        OnStateSet?.Invoke();
     }
 
     public void SetCoordinates(int x,int y)//class of index is too much for now
@@ -89,12 +107,12 @@ public class Cell
     }
 
     /// <summary>
-    /// sets the cell State
+    /// sets the prefab and State of the cell
     /// </summary>
-    /// <param name="cellState"></param>
-    public void SetState(CellStateEnum cellState)
+    /// <param name="prefabState"></param>
+    public void SetState(PrefabState prefabState)
     {
-        CellState = cellState;
+        PrefabState = prefabState;
     }
 
     /// <summary>

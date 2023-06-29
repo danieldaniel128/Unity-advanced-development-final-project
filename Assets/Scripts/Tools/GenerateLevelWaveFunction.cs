@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class GenerateLevelWaveFunction : MonoBehaviour
 {
@@ -31,17 +33,50 @@ public class GenerateLevelWaveFunction : MonoBehaviour
             _height = value;
         }
     }
+    /// <summary>
+    /// like in num pad, the names of each prefab will be like that, representing their locations on the tile set:
+    /// 7 8 9
+    /// 4 5 6
+    /// 1 2 3
+    /// </summary>
+    [Header("Ground")]
+    #region TileSet Prefabs
+    [SerializeField] GameObject _ground9;
+    [SerializeField] GameObject _ground8;
+    [SerializeField] GameObject _ground7;
+    [SerializeField] GameObject _ground6;
+    [SerializeField] GameObject _ground5;
+    [SerializeField] GameObject _ground4;
+    [SerializeField] GameObject _ground3;
+    [SerializeField] GameObject _ground2;
+    [SerializeField] GameObject _ground1;
+    [SerializeField] List<GameObject> _tileSetPrefabs;
+    List<PrefabState> prefabStates;
+    #endregion
+
+    void GetPrefabsStates()
+    {
+        prefabStates = new List<PrefabState>();
+        foreach (GameObject item in _tileSetPrefabs)
+        {
+            prefabStates.Add(item.GetComponent<PrefabState>());
+        }
+        prefabStates.Add(null);//the empty state
+    }
 
     private void Start()
     {
-        Debug.Log(Width +" "+ Height);
+        //Debug.Log(Width +" "+ Height);
+        GetPrefabsStates();
         SetGridCells();
         SetGridNeighbors();
+        ConvertCellsToPrefabs();
     }
     private void SetGridCells()
     {
         CellLevelGrid = new Cell[Width, Height];
-        CellLevelGrid[0,0] = new Cell(Cell.GetRandomCell());
+        CellStateEnum cellState = Cell.GetRandomCell();
+        CellLevelGrid[0,0] = new Cell(prefabStates.FirstOrDefault(c => c.CellStateEnum == cellState));
         //Debug.Log($"<color=red> x: 0 y: 0 </color>");
         for (int x = 0; x < Width; x++)
         {
@@ -50,7 +85,7 @@ public class GenerateLevelWaveFunction : MonoBehaviour
                 if (x == 0 && y == 0)
                     continue;
                 //Debug.Log($"<color=red> x: {x} y: {y} </color>");
-                CellLevelGrid[x,y] = new Cell(Cell.GetRandomCell());//for now
+                CellLevelGrid[x,y] = new Cell(null);//for now
                 CellLevelGrid[x,y].SetCoordinates(x, y);
             }
         }
@@ -95,6 +130,18 @@ public class GenerateLevelWaveFunction : MonoBehaviour
         cell.SetCellNeighbors(cell,neighbors);
     }
 
+    void ConvertCellsToPrefabs()
+    {
+        for (int x = 0; x < Width; x++)
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                InstantiatePrefab(CellLevelGrid[x, y]);
+            }
+        }
+    }
+
+
     private bool CheckIfInBounds(Index2D cellIndex)
     {
         if(cellIndex.X >= 0 && cellIndex.X < Width)
@@ -102,4 +149,12 @@ public class GenerateLevelWaveFunction : MonoBehaviour
                 return true;
         return false;
     } 
+
+
+    private void InstantiatePrefab(Cell cell)
+    {
+        Instantiate(cell.PrefabState.CellPrefab,new Vector3(cell.CellIndex.X-7.5f,cell.CellIndex.Y-4.5f),Quaternion.identity);
+    }
+
+
 }
