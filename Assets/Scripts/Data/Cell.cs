@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 //Daniel
@@ -89,7 +90,7 @@ public class Cell
 
     private void CalculateNewPossibleCellStatesToConnect()
     {
-        //PrefabState.prefabConnecter.TopCornerLeft;
+        //CurrentPossibleCellStatesToConnect= CurrentPossibleCellStatesToConnect.Where(c => c == PrefabState.prefabConnecter)//PrefabState.prefabConnecter.TopCornerLeft.Where(c => c = PrefabState);
     }
     private void OnStateSetInvoke()
     {
