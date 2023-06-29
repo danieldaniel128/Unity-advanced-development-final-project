@@ -11,6 +11,8 @@ public class ML_Agents_First_Script : Agent
     [SerializeField] private Transform target;
     [SerializeField] private float moveSpeed = 1;
     private Vector3 agentStartTransformPosition;
+
+    [SerializeField] private SimplePlayerController simpleController;
     
     private void Awake()
     {
@@ -32,7 +34,9 @@ public class ML_Agents_First_Script : Agent
         float moveX = actions.ContinuousActions[0];
         float moveY = actions.ContinuousActions[1];
 
-        transform.position += new Vector3(moveX, moveY, 0) * Time.deltaTime * moveSpeed;
+        simpleController.MoveX = moveX;
+        simpleController.MoveY = moveY;
+        //transform.position += new Vector3(moveX, moveY, 0) * Time.deltaTime * moveSpeed;
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)

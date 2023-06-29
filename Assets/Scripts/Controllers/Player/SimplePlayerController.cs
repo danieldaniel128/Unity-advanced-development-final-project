@@ -5,9 +5,11 @@ using UnityEngine;
 public class SimplePlayerController : MonoBehaviour
 {
     public float MoveSpeed = 1f;
-
+    [SerializeField] private bool isAI = false;
     public float JumpForce = 1f;
     [SerializeField] Rigidbody2D rb;
+   public float MoveX;
+   public float MoveY;
 
     // Start is called before the first frame update
     void Start()
@@ -31,10 +33,12 @@ public class SimplePlayerController : MonoBehaviour
     }
     public void Move()
     {
-        float moveX = Input.GetAxis("Horizontal");
-        float moveY = Input.GetAxis("Vertical");
-
-        transform.Translate(new Vector3(moveX, moveY, 0) * MoveSpeed * Time.deltaTime);
+        if (!isAI)
+        {
+           MoveX = Input.GetAxis("Horizontal");
+           MoveY = Input.GetAxis("Vertical");
+        }
+        transform.Translate(new Vector3(MoveX, MoveY, 0) * MoveSpeed * Time.deltaTime);
     }
 
     public void Jump()
