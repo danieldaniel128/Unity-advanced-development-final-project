@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 //Daniel
@@ -87,30 +88,7 @@ public class Cell
         //this.PrefabState = prefabState;
         OnStateSet = CalculateNewPossibleCellStatesToConnect;
     }
-
-    //private void CalculateNewPossibleCellStatesToConnect()
-    //{
-    //    List<CellStateEnum> tmpList = new List<CellStateEnum>();
-    //    foreach (Cell neighborCell in NeighborCells)
-    //    {
-    //        foreach (CellStateEnum possibleCellStateToConnect in PossibleCellStatesToConnect)
-    //        {
-    //            //gets the pre
-    //            PrefabState prefabState = GenerateLevelWaveFunction.Instance.prefabStates.FirstOrDefault(c => c!=null && c.CellStateEnum == possibleCellStateToConnect);
-    //            if(prefabState==null)
-    //                continue;
-    //            GameObject gameObject = prefabState.CellPrefab;
-    //            if (!PrefabState.prefabConnecter.BottomCornerLeft.Contains(gameObject))
-    //            {
-    //                neighborCell.RemovePossibleCellStateToConnect(possibleCellStateToConnect);
-    //                Debug.Log("removed: " + possibleCellStateToConnect);
-    //            }
-    //            Debug.Log("got here");
-    //        }
-    //        Debug.Log("PossibleCellStatesToConnect count: " + PossibleCellStatesToConnect.Count);
-    //    }
-    //}
-    private void CalculateNewPossibleCellStatesToConnect()
+    private void CalculateNewPossibleCellStatesToConnect()//works
     {
         List<CellStateEnum> tmpList = new List<CellStateEnum>();
         foreach (Cell neighborCell in NeighborCells)
@@ -130,8 +108,15 @@ public class Cell
                     updatedPossibleCellStates.Add(possibleCellStateToConnect);
                 }
             }
-
             neighborCell.SetPossibleCellStatesToConnect(updatedPossibleCellStates);
+        }
+    }
+    private void NewCalculationsTesting()
+    {
+        List<CellStateEnum> tmpList = new List<CellStateEnum>();
+        foreach (Cell neighborCell in NeighborCells)
+        {
+            ChecksByDirection(neighborCell);
         }
     }
     private bool IsPrefabInConnecterList(GameObject prefab, PrefabConnecter prefabConnecter)
@@ -157,6 +142,65 @@ public class Cell
             return true;
 
         return false;
+    }
+    public void ChecksByDirection(Cell cellNeighbor)
+    {
+
+        Index2D index2D = new Index2D(cellNeighbor.CellIndex.X - this.CellIndex.X, cellNeighbor.CellIndex.Y - this.CellIndex.Y);
+            switch ((index2D.X, index2D.Y))
+            {
+                case (-1, 0):
+                    if(LeftNeighborCell!=null)
+                    {
+                        PossibleCellStatesToConnect = PossibleCellStatesToConnect.Intersect(PossibleCellStatesToConnect.Where(a => PrefabState.prefabConnecter.MidLeft.Any(b => GenerateLevelWaveFunction.Instance.prefabStates.Any(s => s.CellPrefab == b && s.CellStateEnum == a))).ToList()).ToList();
+                    }
+                break;
+                case (1, 0):
+                    if (RightNeighborCell != null)
+                    {
+                        PossibleCellStatesToConnect = PossibleCellStatesToConnect.Intersect(PossibleCellStatesToConnect.Where(a => PrefabState.prefabConnecter.MidRight.Any(b => GenerateLevelWaveFunction.Instance.prefabStates.Any(s => s.CellPrefab == b && s.CellStateEnum == a))).ToList()).ToList();
+                    }
+                    break;
+                case (0, -1):
+                    if (BottomNeighborCell != null)
+                    {
+                        PossibleCellStatesToConnect = PossibleCellStatesToConnect.Intersect(PossibleCellStatesToConnect.Where(a => PrefabState.prefabConnecter.BottomCornerMid.Any(b => GenerateLevelWaveFunction.Instance.prefabStates.Any(s => s.CellPrefab == b && s.CellStateEnum == a))).ToList()).ToList();
+                    }
+                    break;
+                case (1, -1):
+                    if (BottomRightNeighborCell != null)
+                    {
+                        PossibleCellStatesToConnect = PossibleCellStatesToConnect.Intersect(PossibleCellStatesToConnect.Where(a => PrefabState.prefabConnecter.BottomCornerRight.Any(b => GenerateLevelWaveFunction.Instance.prefabStates.Any(s => s.CellPrefab == b && s.CellStateEnum == a))).ToList()).ToList();
+                    }
+                    break;
+                case (-1, -1):
+                    if (BottomleftNeighborCell != null)
+                    {
+                        PossibleCellStatesToConnect = PossibleCellStatesToConnect.Intersect(PossibleCellStatesToConnect.Where(a => PrefabState.prefabConnecter.BottomCornerLeft.Any(b => GenerateLevelWaveFunction.Instance.prefabStates.Any(s => s.CellPrefab == b && s.CellStateEnum == a))).ToList()).ToList();
+                    }
+                    break;
+                case (0, 1):
+                    if (TopNeighborCell != null)
+                    {
+                        PossibleCellStatesToConnect = PossibleCellStatesToConnect.Intersect(PossibleCellStatesToConnect.Where(a => PrefabState.prefabConnecter.TopCornerMid.Any(b => GenerateLevelWaveFunction.Instance.prefabStates.Any(s => s.CellPrefab == b && s.CellStateEnum == a))).ToList()).ToList();
+                    }
+                    break;
+                case (1, 1):
+                    if (TopRightNeighborCell != null)
+                    {
+                        PossibleCellStatesToConnect = PossibleCellStatesToConnect.Intersect(PossibleCellStatesToConnect.Where(a => PrefabState.prefabConnecter.TopCornerRight.Any(b => GenerateLevelWaveFunction.Instance.prefabStates.Any(s => s.CellPrefab == b && s.CellStateEnum == a))).ToList()).ToList();
+                    }
+                    break;
+                case (-1, 1):
+                    if (TopleftNeighborCell != null)
+                    {
+                        PossibleCellStatesToConnect = PossibleCellStatesToConnect.Intersect(PossibleCellStatesToConnect.Where(a => PrefabState.prefabConnecter.TopCornerLeft.Any(b => GenerateLevelWaveFunction.Instance.prefabStates.Any(s => s.CellPrefab == b && s.CellStateEnum == a))).ToList()).ToList();
+                    }
+                    break;
+                default:
+                    break;
+            
+        }
     }
     private void OnStateSetInvoke()
     {

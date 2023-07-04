@@ -98,7 +98,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8137bbb2cfc8bbd43a52c7f4c4766af3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TopCornerLeft: []
+  TopCornerLeft:
+  - {fileID: 0}
   TopCornerMid:
   - {fileID: 8273458880994198667, guid: 07dccf88e566e624aa9438b1be29d254, type: 3}
   - {fileID: 2817973829974996104, guid: eb48eb0fd8626c349b180fb34e49fd7b, type: 3}
@@ -109,10 +110,13 @@ MonoBehaviour:
   MidLeft:
   - {fileID: 9193306210728429747, guid: 13e6aa73fe1083a4b8414084a2a2f682, type: 3}
   - {fileID: 3863525410558138719, guid: 7d1c45efd944b4e418223e7018065d28, type: 3}
+  - {fileID: 0}
   MidRight: []
-  BottomCornerMid: []
+  BottomCornerMid:
+  - {fileID: 0}
   BottomCornerRight: []
-  BottomCornerLeft: []
+  BottomCornerLeft:
+  - {fileID: 0}
 --- !u!114 &7081159861905726418
 MonoBehaviour:
   m_ObjectHideFlags: 0

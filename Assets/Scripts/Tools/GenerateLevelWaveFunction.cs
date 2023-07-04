@@ -9,6 +9,7 @@ using static UnityEditor.Progress;
 public class GenerateLevelWaveFunction : MonoBehaviour
 {
     public static GenerateLevelWaveFunction Instance;
+    [SerializeField] Transform ParentLevel;
     private void Awake()
     {
         if (Instance == null)
@@ -62,6 +63,7 @@ public class GenerateLevelWaveFunction : MonoBehaviour
     [SerializeField] List<GameObject> _tileSetPrefabs;
     public List<PrefabState> prefabStates;
     #endregion
+
 
 
     [ContextMenu("GetPrefabsStates")]
@@ -153,8 +155,13 @@ public class GenerateLevelWaveFunction : MonoBehaviour
                 if (x == 0 && y == 0)
                     continue;
                 Cell thisCell = CellLevelGrid[x, y];
-                int posStateIndex = UnityEngine.Random.Range(0, thisCell.PossibleCellStatesToConnect.Count);
-                thisCell.SetState(prefabStates.FirstOrDefault(c => c.CellStateEnum == thisCell.PossibleCellStatesToConnect[posStateIndex]));
+                if(thisCell.PossibleCellStatesToConnect.Count==0)
+                    thisCell.SetState(null);
+                else
+                {
+                    int posStateIndex = UnityEngine.Random.Range(0, thisCell.PossibleCellStatesToConnect.Count);
+                    thisCell.SetState(prefabStates.FirstOrDefault(c => c.CellStateEnum == thisCell.PossibleCellStatesToConnect[posStateIndex]));
+                }
             }
         }
     }
@@ -185,10 +192,14 @@ public class GenerateLevelWaveFunction : MonoBehaviour
 
     private void InstantiatePrefab(Cell cell)
     {
-        if(cell.PrefabState ==null)
-        Debug.Log($"x: {cell.CellIndex.X} y: {cell.CellIndex.Y}");
+        if (cell.PrefabState == null)
+        {
+            Debug.Log($"x: {cell.CellIndex.X} y: {cell.CellIndex.Y}");
+        }
         else
-        Instantiate(cell.PrefabState.CellPrefab,new Vector3(cell.CellIndex.X-7.5f,cell.CellIndex.Y-4.5f),Quaternion.identity);
+        {
+            Instantiate(cell.PrefabState.CellPrefab, new Vector3(cell.CellIndex.X - 7.5f, cell.CellIndex.Y - 4.5f), Quaternion.identity, ParentLevel);
+        }
     }
 
 
