@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class SimplePlayerController : MonoBehaviour
 {
@@ -12,17 +13,13 @@ public class SimplePlayerController : MonoBehaviour
     public float MoveX;
     public float MoveY;
 
-    // Start is called before the first frame update
-    void Start()
-    {
 
-    }
 
     // Update is called once per frame
     void Update()
     {
        
-       // Inputs();
+       
     }
 
     public void Inputs()
@@ -34,7 +31,7 @@ public class SimplePlayerController : MonoBehaviour
             Jump();
         }
     }
-
+    
     public void Move()
     {
         if (isAI == false)
@@ -51,7 +48,7 @@ public class SimplePlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("collision");
+        
     }
 
 }

@@ -5,6 +5,8 @@ using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 using System;
+using System.Timers;
+using UnityEngine.PlayerLoop;
 
 
 public class ML_Agents_First_Script : Agent
@@ -12,9 +14,13 @@ public class ML_Agents_First_Script : Agent
     [SerializeField] private Transform target;
     [SerializeField] private float moveSpeed = 1;
     [SerializeField] private float jumpForce = 1;
+    [SerializeField] private float maxReward = 1;
     [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private float minTimeToReachGoal = 15;
+    [SerializeField] private float maxTimeToReachGoal = 30;
     [SerializeField] private bool isGrounded = true;
 
+    private float startDistace;
     private Vector3 agentStartTransformPosition;
 
     [SerializeField] private SimplePlayerController simpleController;
@@ -23,21 +29,70 @@ public class ML_Agents_First_Script : Agent
     {
         agentStartTransformPosition = transform.position;
     }
+
+    
+    public override void Initialize()
+    {
+        base.Initialize();
+    }
+    
     public override void OnEpisodeBegin()
     {
         transform.position = agentStartTransformPosition;
+        startDistace = Vector3.Distance(transform.position, target.position);
+        StartCoroutine(EpisodeTimer());
+        
     }
     
+    private IEnumerator EpisodeTimer()
+    {
+        yield return new WaitForSeconds(maxTimeToReachGoal);
+        GiveReward();
+    }
+
+    private void GiveReward()
+    {
+        float distance = Vector3.Distance(transform.position, target.position);
+        float reward = 0;
+        Debug.Log("distance is: " + distance);
+        if (distance > 0)
+        {
+            reward = (distance / minTimeToReachGoal) * maxReward;
+            Debug.Log("positive reward is:" + reward);
+            SetReward(reward);
+            EndEpisode();
+        }
+        if (transform.localPosition.x < transform.localPosition.x + 2)
+        {
+            reward = -0.2f;
+            SetReward(reward);
+        }
+        Debug.Log("reward is: " + reward);
+    }
+
     public override void CollectObservations(VectorSensor sensor)
     {
-        sensor.AddObservation(transform.position);
-        sensor.AddObservation(target.position);
+        sensor.AddObservation((Vector2)transform.localPosition);
+        sensor.AddObservation((Vector2)target.localPosition);
+        //var direction = target.position - transform.position;
+        //var normalizedDistance = Vector3.Distance(transform.position, target.position);
+        //sensor.AddObservation(direction.normalized);
+        //sensor.AddObservation(normalizedDistance);
     }
 
     public override void OnActionReceived(ActionBuffers actions)
     {
         float moveX = actions.ContinuousActions[0];
-       // int jump = actions.DiscreteActions[0];
+        int moveXint = actions.DiscreteActions[0];
+       // Debug.Log(moveX);
+        transform.position += new Vector3(moveX, 0) * moveSpeed * Time.deltaTime;
+        if (moveXint == 1 && isGrounded)
+        {
+            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            isGrounded = false;
+        }
+     //   transform.position += new Vector3(moveXint, 0, 0) * moveSpeed * Time.deltaTime;
+        // int jump = actions.DiscreteActions[0];
         //simpleController.MoveX = moveX;
         
        //if (jump == 1)
@@ -46,50 +101,44 @@ public class ML_Agents_First_Script : Agent
        //     isGrounded = false;
        // }
         //transform.Translate(new Vector3(moveX, 0, 0) * moveSpeed * Time.deltaTime);
-        transform.position += new Vector3(moveX, 0, 0) * moveSpeed * Time.deltaTime;
-        
-
+  
     }
-
+    
+   
     public override void Heuristic(in ActionBuffers actionsOut)
     {
         ActionSegment<float> continuousActions = actionsOut.ContinuousActions;
-        //ActionSegment<int> discreteActions = actionsOut.DiscreteActions;
+        ActionSegment<int> discreteActions = actionsOut.DiscreteActions;
         continuousActions[0] = Input.GetAxisRaw("Horizontal");
-        //discreteActions[0] = Convert.ToInt32(Input.GetButtonDown("Jump"));
+   
+        discreteActions[0] = (Input.GetButtonDown("Jump")) ? 1 : 0;
+        //Debug.Log("discrete" + discreteActions[0]);
+       // Debug.Log("contentious" + continuousActions[0]);
 
     }
 
-  
+   
     public void OnTriggerEnter2D(Collider2D coll)
     {
-        Debug.Log("collision");
+      
         if (coll.CompareTag("Obstacle"))
         {
-            SetReward(-1f);
-            EndEpisode();
+            SetReward(-0.25f);
+            GiveReward();
             Debug.Log("ouch");
         }
 
         if (coll.CompareTag("Goal"))
         {
-            if (Time.time is > 15 and < 30)
-            {
-             SetReward(1f);
-            }
-            else
-            { 
-                SetReward(-0.5f);
-            }
-            EndEpisode();
-            Debug.Log("win");
-            
+            GiveReward();
+             Debug.Log("win");
         }
+        
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         
-        Debug.Log("grounded");
+        //Debug.Log("grounded");
         isGrounded = true;
     }
   
