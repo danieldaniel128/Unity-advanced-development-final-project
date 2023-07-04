@@ -3,10 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 using UnityEngine;
+using static GameManager;
 using static UnityEditor.Progress;
 
 public class GenerateLevelWaveFunction : MonoBehaviour
 {
+    public static GenerateLevelWaveFunction Instance;
+    [SerializeField] Transform ParentLevel;
+    private void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+    }
     public Cell[,] CellLevelGrid;
 
     [SerializeField] private int _width, _height;
@@ -51,9 +61,12 @@ public class GenerateLevelWaveFunction : MonoBehaviour
     [SerializeField] GameObject _ground2;
     [SerializeField] GameObject _ground1;
     [SerializeField] List<GameObject> _tileSetPrefabs;
-    List<PrefabState> prefabStates;
+    public List<PrefabState> prefabStates;
     #endregion
 
+
+
+    [ContextMenu("GetPrefabsStates")]
     void GetPrefabsStates()
     {
         prefabStates = new List<PrefabState>();
@@ -67,16 +80,17 @@ public class GenerateLevelWaveFunction : MonoBehaviour
     private void Start()
     {
         //Debug.Log(Width +" "+ Height);
-        GetPrefabsStates();
+        //GetPrefabsStates();
         SetGridCells();
         SetGridNeighbors();
+        SetCellsStates();
         ConvertCellsToPrefabs();
     }
     private void SetGridCells()
     {
         CellLevelGrid = new Cell[Width, Height];
         CellStateEnum cellState = Cell.GetRandomCell();
-        CellLevelGrid[0,0] = new Cell(prefabStates.FirstOrDefault(c => c.CellStateEnum == cellState));
+        CellLevelGrid[0,0] = new Cell();
         //Debug.Log($"<color=red> x: 0 y: 0 </color>");
         for (int x = 0; x < Width; x++)
         {
@@ -85,7 +99,7 @@ public class GenerateLevelWaveFunction : MonoBehaviour
                 if (x == 0 && y == 0)
                     continue;
                 //Debug.Log($"<color=red> x: {x} y: {y} </color>");
-                CellLevelGrid[x,y] = new Cell(null);//for now
+                CellLevelGrid[x,y] = new Cell();//for now
                 CellLevelGrid[x,y].SetCoordinates(x, y);
             }
         }
@@ -130,6 +144,29 @@ public class GenerateLevelWaveFunction : MonoBehaviour
         cell.SetCellNeighbors(cell,neighbors);
     }
 
+    private void SetCellsStates()
+    {
+        CellStateEnum cellState = Cell.GetRandomCell();
+        CellLevelGrid[0, 0].SetState(prefabStates.FirstOrDefault(c => c.CellStateEnum == cellState));
+        for (int x = 0; x < Width; x++)
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                if (x == 0 && y == 0)
+                    continue;
+                Cell thisCell = CellLevelGrid[x, y];
+                if(thisCell.PossibleCellStatesToConnect.Count==0)
+                    thisCell.SetState(null);
+                else
+                {
+                    int posStateIndex = UnityEngine.Random.Range(0, thisCell.PossibleCellStatesToConnect.Count);
+                    thisCell.SetState(prefabStates.FirstOrDefault(c => c.CellStateEnum == thisCell.PossibleCellStatesToConnect[posStateIndex]));
+                }
+            }
+        }
+    }
+
+
     void ConvertCellsToPrefabs()
     {
         for (int x = 0; x < Width; x++)
@@ -137,6 +174,8 @@ public class GenerateLevelWaveFunction : MonoBehaviour
             for (int y = 0; y < Height; y++)
             {
                 InstantiatePrefab(CellLevelGrid[x, y]);
+                if (CellLevelGrid[x, y] == null)
+                    Debug.Log($"x: {x} y: {y}");
             }
         }
     }
@@ -153,7 +192,14 @@ public class GenerateLevelWaveFunction : MonoBehaviour
 
     private void InstantiatePrefab(Cell cell)
     {
-        Instantiate(cell.PrefabState.CellPrefab,new Vector3(cell.CellIndex.X-7.5f,cell.CellIndex.Y-4.5f),Quaternion.identity);
+        if (cell.PrefabState == null)
+        {
+            Debug.Log($"x: {cell.CellIndex.X} y: {cell.CellIndex.Y}");
+        }
+        else
+        {
+            Instantiate(cell.PrefabState.CellPrefab, new Vector3(cell.CellIndex.X - 7.5f, cell.CellIndex.Y - 4.5f), Quaternion.identity, ParentLevel);
+        }
     }
 
 

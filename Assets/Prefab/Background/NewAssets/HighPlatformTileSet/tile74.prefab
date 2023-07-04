@@ -106,12 +106,16 @@ MonoBehaviour:
   TopCornerRight:
   - {fileID: 8701659199843124365, guid: 8178b9d219e1cca4a9572907f754e9ff, type: 3}
   - {fileID: 5738560802891469743, guid: 5d9dab63fd5cc4c4d90c6d10f056dda1, type: 3}
+  - {fileID: 5738560802891469743, guid: 5d9dab63fd5cc4c4d90c6d10f056dda1, type: 3}
   MidLeft:
   - {fileID: 3005903213206350177, guid: 7e2f0cf718d6fb447b295f35e32c8c83, type: 3}
   - {fileID: 9106872325478668566, guid: 8798ec7354501374b86089caf7f54027, type: 3}
-  MidRight: []
-  BottomCornerMid: []
-  BottomCornerRight: []
+  MidRight:
+  - {fileID: 0}
+  BottomCornerMid:
+  - {fileID: 0}
+  BottomCornerRight:
+  - {fileID: 0}
   BottomCornerLeft: []
 --- !u!114 &415346760495482395
 MonoBehaviour:

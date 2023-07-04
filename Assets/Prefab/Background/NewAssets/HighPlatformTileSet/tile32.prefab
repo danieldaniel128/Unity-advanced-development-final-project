@@ -98,9 +98,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8137bbb2cfc8bbd43a52c7f4c4766af3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TopCornerLeft: []
-  TopCornerMid: []
-  TopCornerRight: []
+  TopCornerLeft:
+  - {fileID: 0}
+  TopCornerMid:
+  - {fileID: 0}
+  TopCornerRight:
+  - {fileID: 0}
   MidLeft:
   - {fileID: 5738560802891469743, guid: 5d9dab63fd5cc4c4d90c6d10f056dda1, type: 3}
   - {fileID: 7836923180160658039}
