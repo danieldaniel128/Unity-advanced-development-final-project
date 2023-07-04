@@ -19,7 +19,7 @@ namespace TarodevController
         public bool JumpingThisFrame { get; private set; }
 
         public float AgentMoveInput;
-        public int AgentJumpInput;
+        public bool AgentJumpInput;
         [SerializeField] bool useAgentInput = false;
         public bool LandingThisFrame { get; private set; }
         public Vector3 RawMovement { get; private set; }
@@ -177,8 +177,9 @@ namespace TarodevController
             {
                 CalculateAgentWalk();
             }
-            else
+            else 
             
+            {
             if (Input.X != 0)
             {
                 // Set horizontal move speed
@@ -201,6 +202,7 @@ namespace TarodevController
             {
                 // Don't walk through walls
                 _currentHorizontalSpeed = 0;
+            }
             }
         }
 
@@ -293,6 +295,45 @@ namespace TarodevController
 
         private void CalculateJump()
         {
+            if (useAgentInput)
+            {
+                CalculateAgentJump();
+            }
+            else
+            {
+                CalculateNormalJump();
+            }
+        }
+        public void CalculateAgentJump()
+        {
+            // Jump if: grounded or within coyote threshold || sufficient jump buffer
+            if (AgentJumpInput && CanUseCoyote || HasBufferedJump)
+            {
+                _currentVerticalSpeed = _jumpHeight;
+                _endedJumpEarly = false;
+                _coyoteUsable = false;
+                _timeLeftGrounded = float.MinValue;
+                JumpingThisFrame = true;
+            }
+            else
+            {
+                JumpingThisFrame = false;
+            }
+
+            // End the jump early if button released
+            if (!_colDown && Input.JumpUp && !_endedJumpEarly && Velocity.y > 0)
+            {
+                // _currentVerticalSpeed = 0;
+                _endedJumpEarly = true;
+            }
+
+            if (_colUp)
+            {
+                if (_currentVerticalSpeed > 0) _currentVerticalSpeed = 0;
+            }
+        }
+        public void CalculateNormalJump()
+        {
             // Jump if: grounded or within coyote threshold || sufficient jump buffer
             if (Input.JumpDown && CanUseCoyote || HasBufferedJump)
             {
@@ -319,7 +360,6 @@ namespace TarodevController
                 if (_currentVerticalSpeed > 0) _currentVerticalSpeed = 0;
             }
         }
-
         #endregion
 
         #region Move

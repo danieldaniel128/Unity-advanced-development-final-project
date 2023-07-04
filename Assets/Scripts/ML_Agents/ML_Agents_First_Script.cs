@@ -82,15 +82,12 @@ public class ML_Agents_First_Script : Agent
         //sensor.AddObservation(direction.normalized);
         //sensor.AddObservation(normalizedDistance);
     }
-    public void InputCoolDown()
-    {
-
-    }
+ 
     public override void OnActionReceived(ActionBuffers actions)
     {
         float moveX = actions.ContinuousActions[0];
         int jumpInput = actions.DiscreteActions[0];
-        playerControllerNew.AgentJumpInput = jumpInput;
+        playerControllerNew.AgentJumpInput = Convert.ToBoolean(jumpInput);
         playerControllerNew.AgentMoveInput = moveX;
      
        
@@ -120,6 +117,8 @@ public class ML_Agents_First_Script : Agent
     {
         ActionSegment<float> continuousActions = actionsOut.ContinuousActions;
         ActionSegment<int> discreteActions = actionsOut.DiscreteActions;
+        playerControllerNew.AgentJumpInput = Convert.ToBoolean(discreteActions[0]);
+        playerControllerNew.AgentMoveInput = continuousActions[0];
         continuousActions[0] = Input.GetAxisRaw("Horizontal");
    
         discreteActions[0] = (Input.GetButtonDown("Jump")) ? 1 : 0;

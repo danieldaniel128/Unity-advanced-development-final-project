@@ -130,6 +130,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17df9c2561e245a4c9c62fb985c56f39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AgentMoveInput: 0
+  AgentJumpInput: 0
+  useAgentInput: 0
   _characterBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
@@ -139,7 +142,7 @@ MonoBehaviour:
   _detectorCount: 3
   _detectionRayLength: 0.1
   _rayBuffer: 0.1
-  _acceleration: 90
+  _acceleration: 25
   _moveClamp: 13
   _deAcceleration: 60
   _apexBonus: 2
@@ -255,12 +258,10 @@ MonoBehaviour:
   moveSpeed: 3
   jumpForce: 10
   maxReward: 1
-  rb: {fileID: 0}
   minTimeToReachGoal: 15
   maxTimeToReachGoal: 30
   isGrounded: 1
-  playerController: {fileID: 7512443565686132625}
-  simpleController: {fileID: 7512443565686132629}
+  playerControllerNew: {fileID: 0}
 --- !u!114 &7512443565686132630
 MonoBehaviour:
   m_ObjectHideFlags: 0
