@@ -355,6 +355,45 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a2e86e40dd7cb5f44ad535ac4816aab3, type: 3}
+--- !u!1 &732421921 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5880488955528377036, guid: a2e86e40dd7cb5f44ad535ac4816aab3, type: 3}
+  m_PrefabInstance: {fileID: 1359376721}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &732421933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 732421921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2761ce5111a31f4193e6450b63d6bf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _characterBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0.5, y: 0.5, z: 0}
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  _detectorCount: 3
+  _detectionRayLength: 0.1
+  _rayBuffer: 0.1
+  _acceleration: 90
+  _moveClamp: 13
+  _deAcceleration: 60
+  _apexBonus: 2
+  _fallClamp: -40
+  _minFallSpeed: 80
+  _maxFallSpeed: 120
+  _jumpHeight: 30
+  _jumpApexThreshold: 10
+  _coyoteTimeThreshold: 0.1
+  _jumpBuffer: 0.1
+  _jumpEndEarlyGravityModifier: 3
+  _freeColliderIterations: 10
 --- !u!1001 &1079040272
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -480,6 +519,62 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2479584536628720613, guid: a2e86e40dd7cb5f44ad535ac4816aab3, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2479584536628720613, guid: a2e86e40dd7cb5f44ad535ac4816aab3, type: 3}
+      propertyPath: _fallClamp
+      value: -40
+      objectReference: {fileID: 0}
+    - target: {fileID: 2479584536628720613, guid: a2e86e40dd7cb5f44ad535ac4816aab3, type: 3}
+      propertyPath: _jumpHeight
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 2479584536628720613, guid: a2e86e40dd7cb5f44ad535ac4816aab3, type: 3}
+      propertyPath: _acceleration
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 2479584536628720613, guid: a2e86e40dd7cb5f44ad535ac4816aab3, type: 3}
+      propertyPath: _maxFallSpeed
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 2479584536628720613, guid: a2e86e40dd7cb5f44ad535ac4816aab3, type: 3}
+      propertyPath: _minFallSpeed
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 2479584536628720613, guid: a2e86e40dd7cb5f44ad535ac4816aab3, type: 3}
+      propertyPath: useAgentInput
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2479584536628720613, guid: a2e86e40dd7cb5f44ad535ac4816aab3, type: 3}
+      propertyPath: _groundLayer.m_Bits
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2479584536628720613, guid: a2e86e40dd7cb5f44ad535ac4816aab3, type: 3}
+      propertyPath: _characterBounds.m_Extent.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2479584536628720613, guid: a2e86e40dd7cb5f44ad535ac4816aab3, type: 3}
+      propertyPath: _characterBounds.m_Extent.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5854433513722961493, guid: a2e86e40dd7cb5f44ad535ac4816aab3, type: 3}
+      propertyPath: _groundLayer.m_Bits
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5880488955528377034, guid: a2e86e40dd7cb5f44ad535ac4816aab3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -10.62
+      objectReference: {fileID: 0}
+    - target: {fileID: 5880488955528377034, guid: a2e86e40dd7cb5f44ad535ac4816aab3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 5880488955528377035, guid: a2e86e40dd7cb5f44ad535ac4816aab3, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5880488956886343094, guid: a2e86e40dd7cb5f44ad535ac4816aab3, type: 3}
       propertyPath: m_Name
       value: Level (9)

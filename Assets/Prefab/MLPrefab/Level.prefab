@@ -122,12 +122,14 @@ GameObject:
   - component: {fileID: 5880488955528377034}
   - component: {fileID: 5880488955528377037}
   - component: {fileID: 5880488955528377035}
+  - component: {fileID: 5854433513722961493}
   - component: {fileID: 2479584536628720609}
   - component: {fileID: 2479584536628720613}
   - component: {fileID: 2479584536628720608}
   - component: {fileID: 2479584536628720611}
   - component: {fileID: 2479584536628720610}
   - component: {fileID: 2479584536628720622}
+  - component: {fileID: 7189806690036350162}
   m_Layer: 0
   m_Name: PlayerAgent
   m_TagString: Untagged
@@ -228,6 +230,40 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &5854433513722961493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5880488955528377036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17df9c2561e245a4c9c62fb985c56f39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _characterBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  _detectorCount: 3
+  _detectionRayLength: 0.1
+  _rayBuffer: 0.1
+  _acceleration: 90
+  _moveClamp: 13
+  _deAcceleration: 60
+  _apexBonus: 2
+  _fallClamp: -40
+  _minFallSpeed: 80
+  _maxFallSpeed: 120
+  _jumpHeight: 30
+  _jumpApexThreshold: 10
+  _coyoteTimeThreshold: 0.1
+  _jumpBuffer: 0.1
+  _jumpEndEarlyGravityModifier: 3
+  _freeColliderIterations: 10
 --- !u!114 &2479584536628720609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -253,28 +289,28 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5880488955528377036}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d2761ce5111a31f4193e6450b63d6bf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _characterBounds:
     m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0.5, y: 0.5, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
   _groundLayer:
     serializedVersion: 2
     m_Bits: 8
   _detectorCount: 3
   _detectionRayLength: 0.1
   _rayBuffer: 0.1
-  _acceleration: 90
+  _acceleration: 80
   _moveClamp: 13
   _deAcceleration: 60
   _apexBonus: 2
-  _fallClamp: -40
-  _minFallSpeed: 80
-  _maxFallSpeed: 120
-  _jumpHeight: 30
+  _fallClamp: -10
+  _minFallSpeed: 5
+  _maxFallSpeed: 20
+  _jumpHeight: 10
   _jumpApexThreshold: 10
   _coyoteTimeThreshold: 0.1
   _jumpBuffer: 0.1
@@ -304,7 +340,7 @@ MonoBehaviour:
     hasUpgradedBrainParametersWithActionSpec: 1
   m_Model: {fileID: 5022602860645237092, guid: bf833fbecf3827345a81eea1603d24fe, type: 3}
   m_InferenceDevice: 3
-  m_BehaviorType: 0
+  m_BehaviorType: 1
   m_BehaviorName: MoveToGoal
   TeamId: 0
   m_UseChildSensors: 1
@@ -318,7 +354,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5880488955528377036}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5e8d53fc9a795a245b42def9383a391d, type: 3}
   m_Name: 
@@ -335,6 +371,7 @@ MonoBehaviour:
   minTimeToReachGoal: 15
   maxTimeToReachGoal: 30
   isGrounded: 1
+  playerController: {fileID: 2479584536628720613}
   simpleController: {fileID: 2479584536628720609}
 --- !u!114 &2479584536628720610
 MonoBehaviour:
@@ -371,6 +408,40 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &7189806690036350162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5880488955528377036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2761ce5111a31f4193e6450b63d6bf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _characterBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0.5, y: 0.5, z: 0}
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  _detectorCount: 3
+  _detectionRayLength: 0.1
+  _rayBuffer: 0.1
+  _acceleration: 90
+  _moveClamp: 13
+  _deAcceleration: 60
+  _apexBonus: 2
+  _fallClamp: -40
+  _minFallSpeed: 80
+  _maxFallSpeed: 120
+  _jumpHeight: 30
+  _jumpApexThreshold: 10
+  _coyoteTimeThreshold: 0.1
+  _jumpBuffer: 0.1
+  _jumpEndEarlyGravityModifier: 3
+  _freeColliderIterations: 10
 --- !u!1 &5880488955584618501
 GameObject:
   m_ObjectHideFlags: 0

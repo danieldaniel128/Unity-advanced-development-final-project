@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TarodevController;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
@@ -10,6 +11,7 @@ public class SimplePlayerController : MonoBehaviour
     [SerializeField] private bool isAI = false;
     public float JumpForce = 1f;
     [SerializeField] Rigidbody2D rb;
+
     public float MoveX;
     public float MoveY;
 

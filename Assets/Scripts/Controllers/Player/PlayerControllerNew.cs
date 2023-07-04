@@ -11,12 +11,11 @@ namespace TarodevController
     /// if there's enough interest. You can play and compete for best times here: https://tarodev.itch.io/
     /// If you hve any questions or would like to brag about your score, come to discord: https://discord.gg/GqeHHnhHpz
     /// </summary>
-    public class PlayerController : MonoBehaviour, IPlayerController
+    public class PlayerControllerNew : MonoBehaviour, IPlayerController
     {
         // Public for external hooks
         public Vector3 Velocity { get; private set; }
         public FrameInput Input { get; private set; }
- 
         public bool JumpingThisFrame { get; private set; }
         public bool LandingThisFrame { get; private set; }
         public Vector3 RawMovement { get; private set; }
@@ -32,7 +31,6 @@ namespace TarodevController
 
         private void Update()
         {
-
             if (!_active) return;
             // Calculate velocity
             Velocity = (transform.position - _lastPosition) / Time.deltaTime;
@@ -64,7 +62,6 @@ namespace TarodevController
             {
                 _lastJumpPressed = Time.time;
             }
-
         }
 
         #endregion
@@ -172,38 +169,29 @@ namespace TarodevController
 
         private void CalculateWalk()
         {
-            //if (useAgentInput)
-            //{
-            //    CalculateAgentWalk();
-            //}
-            //else
-            //{
-                if (Input.X != 0)
-                {
-                    // Set horizontal move speed
-                    _currentHorizontalSpeed += Input.X * _acceleration * Time.deltaTime;
+            if (Input.X != 0)
+            {
+                // Set horizontal move speed
+                _currentHorizontalSpeed += Input.X * _acceleration * Time.deltaTime;
 
-                    // clamped by max frame movement
-                    _currentHorizontalSpeed = Mathf.Clamp(_currentHorizontalSpeed, -_moveClamp, _moveClamp);
+                // clamped by max frame movement
+                _currentHorizontalSpeed = Mathf.Clamp(_currentHorizontalSpeed, -_moveClamp, _moveClamp);
 
-                    // Apply bonus at the apex of a jump
-                    var apexBonus = Mathf.Sign(Input.X) * _apexBonus * _apexPoint;
-                    _currentHorizontalSpeed += apexBonus * Time.deltaTime;
-                }
-                else
-                {
-                    // No input. Let's slow the character down
-                    _currentHorizontalSpeed = Mathf.MoveTowards(_currentHorizontalSpeed, 0, _deAcceleration * Time.deltaTime);
-                }
+                // Apply bonus at the apex of a jump
+                var apexBonus = Mathf.Sign(Input.X) * _apexBonus * _apexPoint;
+                _currentHorizontalSpeed += apexBonus * Time.deltaTime;
+            }
+            else
+            {
+                // No input. Let's slow the character down
+                _currentHorizontalSpeed = Mathf.MoveTowards(_currentHorizontalSpeed, 0, _deAcceleration * Time.deltaTime);
+            }
 
-                if (_currentHorizontalSpeed > 0 && _colRight || _currentHorizontalSpeed < 0 && _colLeft)
-                {
-                    // Don't walk through walls
-                    _currentHorizontalSpeed = 0;
-                }
-
-            //}
-
+            if (_currentHorizontalSpeed > 0 && _colRight || _currentHorizontalSpeed < 0 && _colLeft)
+            {
+                // Don't walk through walls
+                _currentHorizontalSpeed = 0;
+            }
         }
 
         #endregion
