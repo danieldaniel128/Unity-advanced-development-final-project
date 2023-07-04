@@ -16,16 +16,17 @@ public class ML_Agents_First_Script : Agent
     [SerializeField] private float moveSpeed = 1;
     [SerializeField] private float jumpForce = 1;
     [SerializeField] private float maxReward = 1;
-    [SerializeField] private Rigidbody2D rb;
+   // [SerializeField] private Rigidbody2D rb;
     [SerializeField] private float minTimeToReachGoal = 15;
     [SerializeField] private float maxTimeToReachGoal = 30;
     [SerializeField] private bool isGrounded = true;
-    [SerializeField] private PlayerController playerController;
+    [SerializeField] private PlayerControllerNew playerControllerNew;
+    //[SerializeField] private float jumpInputCoolDown = 0.3f;
+   //[SerializeField] private float inputTimer = ;
 
     private float startDistace;
     private Vector3 agentStartTransformPosition;
 
-    [SerializeField] private SimplePlayerController simpleController;
     
     private void Awake()
     {
@@ -81,13 +82,16 @@ public class ML_Agents_First_Script : Agent
         //sensor.AddObservation(direction.normalized);
         //sensor.AddObservation(normalizedDistance);
     }
+    public void InputCoolDown()
+    {
 
+    }
     public override void OnActionReceived(ActionBuffers actions)
     {
         float moveX = actions.ContinuousActions[0];
         int jumpInput = actions.DiscreteActions[0];
-      //  playerController.AgentJumpInput = jumpInput;
-     //   playerController.AgentMoveInput = moveX;
+        playerControllerNew.AgentJumpInput = jumpInput;
+        playerControllerNew.AgentMoveInput = moveX;
      
        
        // Debug.Log(moveX);
@@ -148,33 +152,7 @@ public class ML_Agents_First_Script : Agent
         //Debug.Log("grounded");
         isGrounded = true;
     }
-    //public void CalculateAgentWalk()
-    //{
-    //    if (AgentMoveInput != 0)
-    //    {
-    //        // Set horizontal move speed
-    //        _currentHorizontalSpeed += AgentMoveInput * _acceleration * Time.deltaTime;
 
-    //        // clamped by max frame movement
-    //        _currentHorizontalSpeed = Mathf.Clamp(_currentHorizontalSpeed, -_moveClamp, _moveClamp);
-
-    //        // Apply bonus at the apex of a jump
-    //        var apexBonus = Mathf.Sign(AgentMoveInput) * _apexBonus * _apexPoint;
-    //        _currentHorizontalSpeed += apexBonus * Time.deltaTime;
-    //    }
-    //    else
-    //    {
-    //        // No input. Let's slow the character down
-    //        _currentHorizontalSpeed = Mathf.MoveTowards(_currentHorizontalSpeed, 0, _deAcceleration * Time.deltaTime);
-    //    }
-    //    if (_currentHorizontalSpeed > 0 && _colRight || _currentHorizontalSpeed < 0 && _colLeft)
-    //    {
-    //        // Don't walk through walls
-    //        _currentHorizontalSpeed = 0;
-    //    }
-    //public float AgentMoveInput;
-    //public int AgentJumpInput;
-    //[SerializeField] bool useAgentInput = false;
 }
 
 

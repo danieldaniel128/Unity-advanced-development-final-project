@@ -17,6 +17,10 @@ namespace TarodevController
         public Vector3 Velocity { get; private set; }
         public FrameInput Input { get; private set; }
         public bool JumpingThisFrame { get; private set; }
+
+        public float AgentMoveInput;
+        public int AgentJumpInput;
+        [SerializeField] bool useAgentInput = false;
         public bool LandingThisFrame { get; private set; }
         public Vector3 RawMovement { get; private set; }
         public bool Grounded => _colDown;
@@ -169,6 +173,12 @@ namespace TarodevController
 
         private void CalculateWalk()
         {
+            if (useAgentInput)
+            {
+                CalculateAgentWalk();
+            }
+            else
+            
             if (Input.X != 0)
             {
                 // Set horizontal move speed
@@ -194,11 +204,39 @@ namespace TarodevController
             }
         }
 
+        public void CalculateAgentWalk()
+        {
+            if (AgentMoveInput != 0)
+            {
+                // Set horizontal move speed
+                _currentHorizontalSpeed += AgentMoveInput * _acceleration * Time.deltaTime;
+
+                // clamped by max frame movement
+                _currentHorizontalSpeed = Mathf.Clamp(_currentHorizontalSpeed, -_moveClamp, _moveClamp);
+
+                // Apply bonus at the apex of a jump
+                var apexBonus = Mathf.Sign(AgentMoveInput) * _apexBonus * _apexPoint;
+                _currentHorizontalSpeed += apexBonus * Time.deltaTime;
+            }
+            else
+            {
+                // No input. Let's slow the character down
+                _currentHorizontalSpeed =
+                    Mathf.MoveTowards(_currentHorizontalSpeed, 0, _deAcceleration * Time.deltaTime);
+            }
+
+            if (_currentHorizontalSpeed > 0 && _colRight || _currentHorizontalSpeed < 0 && _colLeft)
+            {
+                // Don't walk through walls
+                _currentHorizontalSpeed = 0;
+            }
+        }
+
         #endregion
 
-        #region Gravity
+            #region Gravity
 
-        [Header("GRAVITY")][SerializeField] private float _fallClamp = -40f;
+            [Header("GRAVITY")][SerializeField] private float _fallClamp = -40f;
         [SerializeField] private float _minFallSpeed = 80f;
         [SerializeField] private float _maxFallSpeed = 120f;
         private float _fallSpeed;
