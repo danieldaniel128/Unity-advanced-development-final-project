@@ -63,6 +63,8 @@ public class GenerateLevelWaveFunction : MonoBehaviour
     public List<PrefabState> prefabStates;
     #endregion
 
+
+    [ContextMenu("GetPrefabsStates")]
     void GetPrefabsStates()
     {
         prefabStates = new List<PrefabState>();
@@ -76,7 +78,7 @@ public class GenerateLevelWaveFunction : MonoBehaviour
     private void Start()
     {
         //Debug.Log(Width +" "+ Height);
-        GetPrefabsStates();
+        //GetPrefabsStates();
         SetGridCells();
         SetGridNeighbors();
         SetCellsStates();
@@ -144,6 +146,17 @@ public class GenerateLevelWaveFunction : MonoBehaviour
     {
         CellStateEnum cellState = Cell.GetRandomCell();
         CellLevelGrid[0, 0].SetState(prefabStates.FirstOrDefault(c => c.CellStateEnum == cellState));
+        for (int x = 0; x < Width; x++)
+        {
+            for (int y = 0; y < Height; y++)
+            {
+                if (x == 0 && y == 0)
+                    continue;
+                Cell thisCell = CellLevelGrid[x, y];
+                int posStateIndex = UnityEngine.Random.Range(0, thisCell.PossibleCellStatesToConnect.Count);
+                thisCell.SetState(prefabStates.FirstOrDefault(c => c.CellStateEnum == thisCell.PossibleCellStatesToConnect[posStateIndex]));
+            }
+        }
     }
 
 
@@ -154,6 +167,8 @@ public class GenerateLevelWaveFunction : MonoBehaviour
             for (int y = 0; y < Height; y++)
             {
                 InstantiatePrefab(CellLevelGrid[x, y]);
+                if (CellLevelGrid[x, y] == null)
+                    Debug.Log($"x: {x} y: {y}");
             }
         }
     }
@@ -170,6 +185,9 @@ public class GenerateLevelWaveFunction : MonoBehaviour
 
     private void InstantiatePrefab(Cell cell)
     {
+        if(cell.PrefabState ==null)
+        Debug.Log($"x: {cell.CellIndex.X} y: {cell.CellIndex.Y}");
+        else
         Instantiate(cell.PrefabState.CellPrefab,new Vector3(cell.CellIndex.X-7.5f,cell.CellIndex.Y-4.5f),Quaternion.identity);
     }
 

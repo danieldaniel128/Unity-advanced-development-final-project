@@ -88,19 +88,75 @@ public class Cell
         OnStateSet = CalculateNewPossibleCellStatesToConnect;
     }
 
+    //private void CalculateNewPossibleCellStatesToConnect()
+    //{
+    //    List<CellStateEnum> tmpList = new List<CellStateEnum>();
+    //    foreach (Cell neighborCell in NeighborCells)
+    //    {
+    //        foreach (CellStateEnum possibleCellStateToConnect in PossibleCellStatesToConnect)
+    //        {
+    //            //gets the pre
+    //            PrefabState prefabState = GenerateLevelWaveFunction.Instance.prefabStates.FirstOrDefault(c => c!=null && c.CellStateEnum == possibleCellStateToConnect);
+    //            if(prefabState==null)
+    //                continue;
+    //            GameObject gameObject = prefabState.CellPrefab;
+    //            if (!PrefabState.prefabConnecter.BottomCornerLeft.Contains(gameObject))
+    //            {
+    //                neighborCell.RemovePossibleCellStateToConnect(possibleCellStateToConnect);
+    //                Debug.Log("removed: " + possibleCellStateToConnect);
+    //            }
+    //            Debug.Log("got here");
+    //        }
+    //        Debug.Log("PossibleCellStatesToConnect count: " + PossibleCellStatesToConnect.Count);
+    //    }
+    //}
     private void CalculateNewPossibleCellStatesToConnect()
     {
         List<CellStateEnum> tmpList = new List<CellStateEnum>();
         foreach (Cell neighborCell in NeighborCells)
         {
+            List<CellStateEnum> updatedPossibleCellStates = new List<CellStateEnum>();
             foreach (CellStateEnum possibleCellStateToConnect in PossibleCellStatesToConnect)
             {
-                GameObject gameObject = GenerateLevelWaveFunction.Instance.prefabStates.FirstOrDefault(c => c.CellStateEnum == possibleCellStateToConnect).CellPrefab;
-                if (!PrefabState.prefabConnecter.BottomCornerLeft.Contains(gameObject))
-                    neighborCell.RemovePossibleCellStateToConnect(possibleCellStateToConnect);
+                PrefabState prefabState = GenerateLevelWaveFunction.Instance.prefabStates.Find(s => s?.CellStateEnum == possibleCellStateToConnect);
+                if (prefabState == null)
+                    continue;
+
+                GameObject cellPrefab = prefabState.CellPrefab;
+                PrefabConnecter prefabConnecter = prefabState.prefabConnecter;
+
+                if (IsPrefabInConnecterList(cellPrefab, prefabConnecter))
+                {
+                    updatedPossibleCellStates.Add(possibleCellStateToConnect);
+                }
             }
+
+            neighborCell.SetPossibleCellStatesToConnect(updatedPossibleCellStates);
         }
-        //CurrentPossibleCellStatesToConnect= CurrentPossibleCellStatesToConnect.Where(c => c == PrefabState.prefabConnecter)//PrefabState.prefabConnecter.TopCornerLeft.Where(c => c = PrefabState);
+    }
+    private bool IsPrefabInConnecterList(GameObject prefab, PrefabConnecter prefabConnecter)
+    {
+        if (prefabConnecter == null)
+            return false;
+
+        if (prefabConnecter.TopCornerLeft != null && prefabConnecter.TopCornerLeft.Contains(prefab))
+            return true;
+        if (prefabConnecter.TopCornerMid != null && prefabConnecter.TopCornerMid.Contains(prefab))
+            return true;
+        if (prefabConnecter.TopCornerRight != null && prefabConnecter.TopCornerRight.Contains(prefab))
+            return true;
+        if (prefabConnecter.MidLeft != null && prefabConnecter.MidLeft.Contains(prefab))
+            return true;
+        if (prefabConnecter.MidRight != null && prefabConnecter.MidRight.Contains(prefab))
+            return true;
+        if (prefabConnecter.BottomCornerMid != null && prefabConnecter.BottomCornerMid.Contains(prefab))
+            return true;
+        if (prefabConnecter.BottomCornerRight != null && prefabConnecter.BottomCornerRight.Contains(prefab))
+            return true;
+        if (prefabConnecter.BottomCornerLeft != null && prefabConnecter.BottomCornerLeft.Contains(prefab))
+            return true;
+
+        return false;
     }
     private void OnStateSetInvoke()
     {
