@@ -82,14 +82,24 @@ public class Cell
             , CellStateEnum.GroundMidlle
         }; //default cell states
 
-    public Cell(PrefabState prefabState)
+    public Cell(/*PrefabState prefabState*/)
     {
-        this.PrefabState = prefabState;
+        //this.PrefabState = prefabState;
         OnStateSet = CalculateNewPossibleCellStatesToConnect;
     }
 
     private void CalculateNewPossibleCellStatesToConnect()
     {
+        List<CellStateEnum> tmpList = new List<CellStateEnum>();
+        foreach (Cell neighborCell in NeighborCells)
+        {
+            foreach (CellStateEnum possibleCellStateToConnect in PossibleCellStatesToConnect)
+            {
+                GameObject gameObject = GenerateLevelWaveFunction.Instance.prefabStates.FirstOrDefault(c => c.CellStateEnum == possibleCellStateToConnect).CellPrefab;
+                if (!PrefabState.prefabConnecter.BottomCornerLeft.Contains(gameObject))
+                    neighborCell.RemovePossibleCellStateToConnect(possibleCellStateToConnect);
+            }
+        }
         //CurrentPossibleCellStatesToConnect= CurrentPossibleCellStatesToConnect.Where(c => c == PrefabState.prefabConnecter)//PrefabState.prefabConnecter.TopCornerLeft.Where(c => c = PrefabState);
     }
     private void OnStateSetInvoke()

@@ -3,10 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 using UnityEngine;
+using static GameManager;
 using static UnityEditor.Progress;
 
 public class GenerateLevelWaveFunction : MonoBehaviour
 {
+    public static GenerateLevelWaveFunction Instance;
+    private void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
+    }
     public Cell[,] CellLevelGrid;
 
     [SerializeField] private int _width, _height;
@@ -51,7 +60,7 @@ public class GenerateLevelWaveFunction : MonoBehaviour
     [SerializeField] GameObject _ground2;
     [SerializeField] GameObject _ground1;
     [SerializeField] List<GameObject> _tileSetPrefabs;
-    List<PrefabState> prefabStates;
+    public List<PrefabState> prefabStates;
     #endregion
 
     void GetPrefabsStates()
@@ -70,13 +79,14 @@ public class GenerateLevelWaveFunction : MonoBehaviour
         GetPrefabsStates();
         SetGridCells();
         SetGridNeighbors();
+        SetCellsStates();
         ConvertCellsToPrefabs();
     }
     private void SetGridCells()
     {
         CellLevelGrid = new Cell[Width, Height];
         CellStateEnum cellState = Cell.GetRandomCell();
-        CellLevelGrid[0,0] = new Cell(prefabStates.FirstOrDefault(c => c.CellStateEnum == cellState));
+        CellLevelGrid[0,0] = new Cell();
         //Debug.Log($"<color=red> x: 0 y: 0 </color>");
         for (int x = 0; x < Width; x++)
         {
@@ -85,7 +95,7 @@ public class GenerateLevelWaveFunction : MonoBehaviour
                 if (x == 0 && y == 0)
                     continue;
                 //Debug.Log($"<color=red> x: {x} y: {y} </color>");
-                CellLevelGrid[x,y] = new Cell(null);//for now
+                CellLevelGrid[x,y] = new Cell();//for now
                 CellLevelGrid[x,y].SetCoordinates(x, y);
             }
         }
@@ -129,6 +139,13 @@ public class GenerateLevelWaveFunction : MonoBehaviour
         }
         cell.SetCellNeighbors(cell,neighbors);
     }
+
+    private void SetCellsStates()
+    {
+        CellStateEnum cellState = Cell.GetRandomCell();
+        CellLevelGrid[0, 0].SetState(prefabStates.FirstOrDefault(c => c.CellStateEnum == cellState));
+    }
+
 
     void ConvertCellsToPrefabs()
     {
