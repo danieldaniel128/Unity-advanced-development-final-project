@@ -48,9 +48,10 @@ public class PerlinNoiseLevelGenerator : MonoBehaviour
 
     public Transform LevelParent;
 
-    public EdgeCollider2D EdgeCollider;
+    [SerializeField] string _platformTag;
+    [SerializeField] string _platformLayer;
 
-    List<Vector2> EdgeColliderPoints;
+    [SerializeField] string _obstacleTag;
 
     private void Start()
     {
@@ -88,8 +89,9 @@ public class PerlinNoiseLevelGenerator : MonoBehaviour
         //_width += platformWidth;
         //platformWidth = _width;
         _lastGeneratedPlatform = Instantiate(PlatformFather, Vector3.zero,Quaternion.identity);
-        LayerMask platformLayer = LayerMask.NameToLayer("Ground");
+        LayerMask platformLayer = LayerMask.NameToLayer(_platformLayer);
         _lastGeneratedPlatform.gameObject.layer = platformLayer;
+        _lastGeneratedPlatform.tag = _platformTag;
         //Debug.Log($"<color=blue>platformWidth {platformWidth} , platformHeight {platformHeight}</color>");
         int startXGenerating = xCounter;
         int stopXGenerating = platformWidth + _width;
@@ -126,7 +128,7 @@ public class PerlinNoiseLevelGenerator : MonoBehaviour
     {
         _lastGeneratedSpikes = Instantiate(PlatformFather,Vector3.zero,Quaternion.identity);
         _lastGeneratedSpikes.name = "spikes";
-        _lastGeneratedSpikes.tag = "Respawn";//should be in const
+        _lastGeneratedSpikes.tag = _obstacleTag;//should be in const
         int spikesNumber = Random.Range(_minSpikesBetweenPlatforms, _maxSpikesBetweenPlatforms + 1);
         for (int x = xCounter; x < _width + spikesNumber; x++)
         {
