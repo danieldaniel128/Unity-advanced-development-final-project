@@ -257,7 +257,7 @@ MonoBehaviour:
   _platformMaxWidth: 3
   _numberOfPlatforms: 7
   PlatformFather: {fileID: 1382038712281648440, guid: 914bb72c71e7e2d42b1ced6ba392a770, type: 3}
-  _minSpikesBetweenPlatforms: 3
+  _minSpikesBetweenPlatforms: 2
   _maxSpikesBetweenPlatforms: 3
   TopCornerLeftPrefab: {fileID: 8273458880994198667, guid: 07dccf88e566e624aa9438b1be29d254, type: 3}
   TopCornerMidPrefab: {fileID: 7836923180160658039, guid: 1a215903dd21a6949b080eeceec3dc40, type: 3}
@@ -270,9 +270,9 @@ MonoBehaviour:
   MidPrefab: {fileID: 9106872325478668566, guid: 8798ec7354501374b86089caf7f54027, type: 3}
   _spikesPrefab: {fileID: 5575111178691670425, guid: ed1b08c100f800e44ba9ccaf90fd42f3, type: 3}
   LevelParent: {fileID: 1397963150}
-  _platformTag: 
-  _platformLayer: 
-  _obstacleTag: 
+  _platformTag: Platform
+  _platformLayer: Ground
+  _obstacleTag: Obstacle
 --- !u!1 &1397963149
 GameObject:
   m_ObjectHideFlags: 0

@@ -54,16 +54,22 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 5000000
+  MaxStep: 0
   target: {fileID: 0}
   moveSpeed: 3
   jumpForce: 10
   maxReward: 1
+  maxPlatformSteps: 3
   rb: {fileID: 5750912711242974139}
+  jumpingInput: 0
+  moveInput: 0
+  samePlatformStepPenalty: -10
+  wrongDirectionPenaltyMultiplier: -10
+  obstaclePenalty: -10
+  goalReward: 60
   minTimeToReachGoal: 15
   maxTimeToReachGoal: 30
   isGrounded: 1
-  simpleController: {fileID: 5750912711242974132}
 --- !u!114 &5750912711242974133
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77,7 +83,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 4
+    VectorObservationSize: 6
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 2
@@ -86,7 +92,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: 7338b36f8148ed34783e40fddd32dfa7, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: ca21b4340463de94a9f11db70857c8dd, type: 3}
   m_InferenceDevice: 3
   m_BehaviorType: 0
   m_BehaviorName: MoveToGoal
