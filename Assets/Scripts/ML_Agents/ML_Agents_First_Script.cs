@@ -74,33 +74,20 @@ public class ML_Agents_First_Script : Agent
     {
         sensor.AddObservation((Vector2)transform.localPosition);
         sensor.AddObservation((Vector2)target.localPosition);
-        //var direction = target.position - transform.position;
-        //var normalizedDistance = Vector3.Distance(transform.position, target.position);
-        //sensor.AddObservation(direction.normalized);
-        //sensor.AddObservation(normalizedDistance);
+
     }
 
     public override void OnActionReceived(ActionBuffers actions)
     {
         float moveX = actions.ContinuousActions[0];
         int moveXint = actions.DiscreteActions[0];
-       // Debug.Log(moveX);
         transform.position += new Vector3(moveX, 0) * moveSpeed * Time.deltaTime;
         if (moveXint == 1 && isGrounded)
         {
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             isGrounded = false;
         }
-     //   transform.position += new Vector3(moveXint, 0, 0) * moveSpeed * Time.deltaTime;
-        // int jump = actions.DiscreteActions[0];
-        //simpleController.MoveX = moveX;
-        
-       //if (jump == 1)
-       // {
-       //     rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-       //     isGrounded = false;
-       // }
-        //transform.Translate(new Vector3(moveX, 0, 0) * moveSpeed * Time.deltaTime);
+
   
     }
     
@@ -112,8 +99,6 @@ public class ML_Agents_First_Script : Agent
         continuousActions[0] = Input.GetAxisRaw("Horizontal");
    
         discreteActions[0] = (Input.GetButtonDown("Jump")) ? 1 : 0;
-        //Debug.Log("discrete" + discreteActions[0]);
-       // Debug.Log("contentious" + continuousActions[0]);
 
     }
 
@@ -137,8 +122,6 @@ public class ML_Agents_First_Script : Agent
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        
-        //Debug.Log("grounded");
         isGrounded = true;
     }
   
