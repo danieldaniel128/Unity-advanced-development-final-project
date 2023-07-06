@@ -98,7 +98,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8137bbb2cfc8bbd43a52c7f4c4766af3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TopCornerLeft: []
+  TopCornerLeft:
+  - {fileID: 0}
   TopCornerMid:
   - {fileID: 8273458880994198667, guid: 07dccf88e566e624aa9438b1be29d254, type: 3}
   - {fileID: 2817973829974996104}
@@ -106,7 +107,8 @@ MonoBehaviour:
   - {fileID: 8701659199843124365, guid: 8178b9d219e1cca4a9572907f754e9ff, type: 3}
   - {fileID: 5738560802891469743, guid: 5d9dab63fd5cc4c4d90c6d10f056dda1, type: 3}
   - {fileID: 9106872325478668566, guid: 8798ec7354501374b86089caf7f54027, type: 3}
-  MidLeft: []
+  MidLeft:
+  - {fileID: 0}
   MidRight:
   - {fileID: 9106872325478668566, guid: 8798ec7354501374b86089caf7f54027, type: 3}
   - {fileID: 8701659199843124365, guid: 8178b9d219e1cca4a9572907f754e9ff, type: 3}
@@ -117,7 +119,8 @@ MonoBehaviour:
   - {fileID: 9193306210728429747, guid: 13e6aa73fe1083a4b8414084a2a2f682, type: 3}
   - {fileID: 3863525410558138719, guid: 7d1c45efd944b4e418223e7018065d28, type: 3}
   - {fileID: 9106872325478668566, guid: 8798ec7354501374b86089caf7f54027, type: 3}
-  BottomCornerLeft: []
+  BottomCornerLeft:
+  - {fileID: 0}
 --- !u!114 &-563989662129096526
 MonoBehaviour:
   m_ObjectHideFlags: 0

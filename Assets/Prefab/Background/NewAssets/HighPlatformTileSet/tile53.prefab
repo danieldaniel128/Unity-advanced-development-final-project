@@ -105,15 +105,18 @@ MonoBehaviour:
   TopCornerMid:
   - {fileID: 8701659199843124365}
   - {fileID: 5738560802891469743, guid: 5d9dab63fd5cc4c4d90c6d10f056dda1, type: 3}
-  TopCornerRight: []
+  TopCornerRight:
+  - {fileID: 0}
   MidLeft:
   - {fileID: 2817973829974996104, guid: eb48eb0fd8626c349b180fb34e49fd7b, type: 3}
   - {fileID: 9106872325478668566, guid: 8798ec7354501374b86089caf7f54027, type: 3}
-  MidRight: []
+  MidRight:
+  - {fileID: 0}
   BottomCornerMid:
   - {fileID: 8701659199843124365}
   - {fileID: 3863525410558138719, guid: 7d1c45efd944b4e418223e7018065d28, type: 3}
-  BottomCornerRight: []
+  BottomCornerRight:
+  - {fileID: 0}
   BottomCornerLeft:
   - {fileID: 2817973829974996104, guid: eb48eb0fd8626c349b180fb34e49fd7b, type: 3}
   - {fileID: 9106872325478668566, guid: 8798ec7354501374b86089caf7f54027, type: 3}
