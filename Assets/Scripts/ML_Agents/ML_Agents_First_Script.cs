@@ -16,24 +16,19 @@ public class ML_Agents_First_Script : Agent
     [SerializeField] private float moveSpeed = 1;
     [SerializeField] private float jumpForce = 1;
     [SerializeField] private float maxReward = 1;
-   // [SerializeField] private Rigidbody2D rb;
     [SerializeField] private float minTimeToReachGoal = 15;
     [SerializeField] private float maxTimeToReachGoal = 30;
-    [SerializeField] private bool isGrounded = true;
     [SerializeField] private PlayerControllerNew playerControllerNew;
-    //[SerializeField] private float jumpInputCoolDown = 0.3f;
-   //[SerializeField] private float inputTimer = ;
-
     private float startDistace;
     private Vector3 agentStartTransformPosition;
+    private Predicate<bool> PressedJumped;
 
-    
     private void Awake()
     {
         agentStartTransformPosition = transform.position;
+        //PressedJumped = OnJumpedMLAgentPressed;
     }
 
-    
     public override void Initialize()
     {
         base.Initialize();
@@ -52,7 +47,10 @@ public class ML_Agents_First_Script : Agent
         yield return new WaitForSeconds(maxTimeToReachGoal);
         GiveReward();
     }
-
+    //private bool OnJumpedMLAgentPressed(bool jumpInput)
+    //{
+    ///    return jumpInput;
+    //}
     private void GiveReward()
     {
         float distance = Vector3.Distance(transform.position, target.position);
@@ -77,39 +75,24 @@ public class ML_Agents_First_Script : Agent
     {
         sensor.AddObservation((Vector2)transform.localPosition);
         sensor.AddObservation((Vector2)target.localPosition);
-        //var direction = target.position - transform.position;
-        //var normalizedDistance = Vector3.Distance(transform.position, target.position);
-        //sensor.AddObservation(direction.normalized);
-        //sensor.AddObservation(normalizedDistance);
     }
  
     public override void OnActionReceived(ActionBuffers actions)
     {
         float moveX = actions.ContinuousActions[0];
         int jumpInput = actions.DiscreteActions[0];
-        playerControllerNew.AgentJumpInput = Convert.ToBoolean(jumpInput);
-        playerControllerNew.AgentMoveInput = moveX;
-     
-       
-       // Debug.Log(moveX);
-        //transform.position += new Vector3(moveX, 0) * moveSpeed * Time.deltaTime;  USE
-        if (jumpInput == 1 && isGrounded)
+
+        if (jumpInput == 1)
         {
-            
-            //rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse); USE
-            //isGrounded = false;                                       USE
+            //playerControllerNew.OnInputEvent?.Invoke();
+
+            playerControllerNew.AgentJumpDownInput = true;
+            //PressedJumped?.Invoke(playerControllerNew.AgentJumpDownInput);
         }
-     //   transform.position += new Vector3(moveXint, 0, 0) * moveSpeed * Time.deltaTime; 
-        // int jump = actions.DiscreteActions[0];
-        //simpleController.MoveX = moveX;
-        
-       //if (jump == 1)
-       // {
-       //     rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-       //     isGrounded = false;
-       // }
-        //transform.Translate(new Vector3(moveX, 0, 0) * moveSpeed * Time.deltaTime);
-  
+        //  playerControllerNew.AgentJumpDownInput = Convert.ToBoolean(jumpInput);
+        playerControllerNew.AgentMoveInput = moveX;
+        //playerControllerNew.OnInputEvent?.Invoke();
+
     }
     
    
@@ -117,17 +100,13 @@ public class ML_Agents_First_Script : Agent
     {
         ActionSegment<float> continuousActions = actionsOut.ContinuousActions;
         ActionSegment<int> discreteActions = actionsOut.DiscreteActions;
-        playerControllerNew.AgentJumpInput = Convert.ToBoolean(discreteActions[0]);
-        playerControllerNew.AgentMoveInput = continuousActions[0];
         continuousActions[0] = Input.GetAxisRaw("Horizontal");
-   
         discreteActions[0] = (Input.GetButtonDown("Jump")) ? 1 : 0;
-        //Debug.Log("discrete" + discreteActions[0]);
-       // Debug.Log("contentious" + continuousActions[0]);
-
+        playerControllerNew.AgentMoveInput = continuousActions[0];
+        playerControllerNew.AgentJumpDownInput = Convert.ToBoolean(discreteActions[0]);
     }
 
-   
+
     public void OnTriggerEnter2D(Collider2D coll)
     {
       
@@ -144,12 +123,6 @@ public class ML_Agents_First_Script : Agent
              Debug.Log("win");
         }
         
-    }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        
-        //Debug.Log("grounded");
-        isGrounded = true;
     }
 
 }

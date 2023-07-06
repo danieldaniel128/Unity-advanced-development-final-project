@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
+using System;
 namespace TarodevController
 {
     /// <summary>
@@ -19,7 +19,8 @@ namespace TarodevController
         public bool JumpingThisFrame { get; private set; }
 
         public float AgentMoveInput;
-        public bool AgentJumpInput;
+        public bool AgentJumpDownInput;
+        public bool AgentJumpUpInput;
         [SerializeField] bool useAgentInput = false;
         public bool LandingThisFrame { get; private set; }
         public Vector3 RawMovement { get; private set; }
@@ -33,6 +34,16 @@ namespace TarodevController
         void Awake() => Invoke(nameof(Activate), 0.5f);
         void Activate() => _active = true;
 
+        public Action OnInputEvent;
+        
+        private void Start()
+        {
+            OnInputEvent = CalculateAgentJump;
+        }
+        private void Init()
+        {
+
+        }
         private void Update()
         {
             if (!_active) return;
@@ -210,6 +221,7 @@ namespace TarodevController
         {
             if (AgentMoveInput != 0)
             {
+                Debug.Log("agent move value: " + AgentMoveInput);
                 // Set horizontal move speed
                 _currentHorizontalSpeed += AgentMoveInput * _acceleration * Time.deltaTime;
 
@@ -297,6 +309,7 @@ namespace TarodevController
         {
             if (useAgentInput)
             {
+               
                 CalculateAgentJump();
             }
             else
@@ -307,13 +320,17 @@ namespace TarodevController
         public void CalculateAgentJump()
         {
             // Jump if: grounded or within coyote threshold || sufficient jump buffer
-            if (AgentJumpInput && CanUseCoyote || HasBufferedJump)
+            //Debug.Log("pressed: " + AgentJumpDownInput);
+            Debug.Log("can enter if: " +(AgentJumpDownInput && CanUseCoyote || HasBufferedJump));
+            if (AgentJumpDownInput && CanUseCoyote || HasBufferedJump)
             {
                 _currentVerticalSpeed = _jumpHeight;
                 _endedJumpEarly = false;
                 _coyoteUsable = false;
                 _timeLeftGrounded = float.MinValue;
                 JumpingThisFrame = true;
+                AgentJumpDownInput = false;
+                Debug.Log($"<color=red> 2 </color>");
             }
             else
             {
