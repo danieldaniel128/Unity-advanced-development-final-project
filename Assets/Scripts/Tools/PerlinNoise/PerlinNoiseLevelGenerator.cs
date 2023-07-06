@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 public class PerlinNoiseLevelGenerator : MonoBehaviour
 {
@@ -20,7 +18,6 @@ public class PerlinNoiseLevelGenerator : MonoBehaviour
 
     [SerializeField] private Transform PlatformFather;
  
-    private int _numOfSpikes;
 
     [SerializeField] private int _minSpikesBetweenPlatforms;
     [SerializeField] private int _maxSpikesBetweenPlatforms;
@@ -58,14 +55,6 @@ public class PerlinNoiseLevelGenerator : MonoBehaviour
         CreateLevel();
     }
 
-    //private void CalculateMapWidth()
-    //{
-    //    for (int i = 0; i < _numberOfPlatforms; i++)
-    //    {
-    //        _width += Random.Range(_platformMinWidth,_platformMaxWidth+1);
-    //    }
-    //    _width += 2 * _numOfSpikes;
-    //}
 
     [ContextMenu("Generate Level")]
     void CreateLevel()
@@ -86,13 +75,10 @@ public class PerlinNoiseLevelGenerator : MonoBehaviour
     [ContextMenu("generate platform test")]
     void CreatePlatform(int platformWidth , int platformHeight)
     {
-        //_width += platformWidth;
-        //platformWidth = _width;
         _lastGeneratedPlatform = Instantiate(PlatformFather, Vector3.zero,Quaternion.identity);
         LayerMask platformLayer = LayerMask.NameToLayer(_platformLayer);
         _lastGeneratedPlatform.gameObject.layer = platformLayer;
         _lastGeneratedPlatform.tag = _platformTag;
-        //Debug.Log($"<color=blue>platformWidth {platformWidth} , platformHeight {platformHeight}</color>");
         int startXGenerating = xCounter;
         int stopXGenerating = platformWidth + _width;
         for (int x = startXGenerating; x < stopXGenerating; x++)
@@ -117,7 +103,6 @@ public class PerlinNoiseLevelGenerator : MonoBehaviour
                     Instantiate(BottomCornerMidPrefab, new Vector3(x - 7.5f, y - 4.5f), Quaternion.identity, _lastGeneratedPlatform);
                 else
                     Instantiate(MidPrefab, new Vector3(x - 7.5f, y - 4.5f), Quaternion.identity, _lastGeneratedPlatform);
-                //Debug.Log($"<color=red>x: {x} y: {y}</color>");
             }
         }
             xCounter += platformWidth;
@@ -141,15 +126,9 @@ public class PerlinNoiseLevelGenerator : MonoBehaviour
 
     void GenerateBoxCollider(Transform collidlessGameObject,int sizeX , int sizeY)
     {
-        BoxCollider2D generatedBoxCollider = collidlessGameObject.AddComponent<BoxCollider2D>();
+        BoxCollider2D generatedBoxCollider = collidlessGameObject.gameObject.AddComponent<BoxCollider2D>();
         generatedBoxCollider.size = new Vector2(sizeX, sizeY);
-        //if(sizeY%2==0)
-        //    generatedBoxCollider.offset = new Vector2(xCounter - sizeX / 2f -0.5f - 7.5f, -4.5f);
-        //else
         int sizeYFactor=0;
-        if (sizeY > 10)
-            sizeYFactor = sizeY - 10;
-        else if(sizeY<10)
             sizeYFactor = sizeY - 10;
         generatedBoxCollider.offset = new Vector2(xCounter - sizeX / 2f - 0.5f - 7.5f, 0 + 0.5f * sizeYFactor);
     }
