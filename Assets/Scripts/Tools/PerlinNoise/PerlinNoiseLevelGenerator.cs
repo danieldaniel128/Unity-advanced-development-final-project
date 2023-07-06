@@ -1,9 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Tilemaps;
-using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 public class PerlinNoiseLevelGenerator : MonoBehaviour
 {
@@ -141,7 +138,9 @@ public class PerlinNoiseLevelGenerator : MonoBehaviour
 
     void GenerateBoxCollider(Transform collidlessGameObject,int sizeX , int sizeY)
     {
-        BoxCollider2D generatedBoxCollider = collidlessGameObject.AddComponent<BoxCollider2D>();
+        //BoxCollider2D generatedBoxCollider = collidlessGameObject.AddComponent<BoxCollider2D>();
+        BoxCollider2D generatedBoxCollider = collidlessGameObject.gameObject.AddComponent<BoxCollider2D>();
+        
         generatedBoxCollider.size = new Vector2(sizeX, sizeY);
         //if(sizeY%2==0)
         //    generatedBoxCollider.offset = new Vector2(xCounter - sizeX / 2f -0.5f - 7.5f, -4.5f);
