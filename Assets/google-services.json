@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "680336623327",
+    "project_id": "unity-advance",
+    "storage_bucket": "unity-advance.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:680336623327:android:f5ec52c7818f3467468b6a",
+        "android_client_info": {
+          "package_name": "com.Tiltan.Adv"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "680336623327-iopju6pa5r97d6mci7h3hgilc97bvp19.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVuW1vRmHNQXOye1hLBvr6D6rBNBoaNTU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "680336623327-iopju6pa5r97d6mci7h3hgilc97bvp19.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
